@@ -20,14 +20,6 @@
       }
     ],
     "baseUrl": ".",
-    "paths": {
-      "@styles/*": ["styles/*"],
-      "@theme/*": ["theme/*"],
-      "@abis/*": ["abis/*"],
-      "@state/*": ["state/*"],
-      "@utils/*": ["utils/*"],
-      "@constants/*": ["constants/*"],
-    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "components/AuditorLink"],
   "exclude": ["node_modules"]

@@ -1,57 +1,56 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 export const AuditorPageContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    align-items: center;
-    flex: 1;
-`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  align-items: center;
+  flex: 1;
+`;
 
 export const AuditorPageSection = styled.div`
-    display: flex;
-    padding-top: 25px;
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-`
-
+  display: flex;
+  padding-top: 25px;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+`;
 
 export const ChartWrapper = styled.div`
-    display: flex;
-    max-height: 300px;
-    width: 100%;
-    justify-content: center;
-`
+  display: flex;
+  max-height: 300px;
+  width: 100%;
+  justify-content: center;
+`;
 
 export const Socials = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+`;
 
 export const SocialsForm = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
 export const Button = styled.p`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 
-    margin: 10px;
-    padding: 10px;
+  margin: 10px;
+  padding: 10px;
 
-    &:hover {
-        text-decoration: underline;
-    }
+  &:hover {
+    text-decoration: underline;
+  }
 
-    background: #6c7ae022;
-`
+  background: #6c7ae022;
+`;
 
 const dots = keyframes`
   0%, 20% {
@@ -80,4 +79,4 @@ export const DotsLoader = styled.div`
     content: ' .';
     animation: ${dots} 1s steps(5, end) infinite;
   }
-`
+`;

@@ -1,8 +1,5 @@
-import { MainPage } from "components/MainPage";
-
+import { Page } from 'features/leaderboard/components/page';
 
 export default function Home() {
-  return (
-    <MainPage />
-  )
+  return <Page />;
 }

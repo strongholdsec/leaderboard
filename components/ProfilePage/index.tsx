@@ -1,12 +1,12 @@
 'use client';
 
-import { AuditorPage } from "components/AuditorPage";
-import { useAccount } from "wagmi";
+// import { useAccount } from 'wagmi';
+
+// import { AuditorPage } from 'components/AuditorPage';
 
 export const ProfilePage = () => {
-    const { address } = useAccount({});
+  // const { address } = useAccount({});
 
-    return (
-        <AuditorPage address={address!} />
-    )
-}
+  // return <AuditorPage address={address!} />;
+  return null;
+};
