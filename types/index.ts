@@ -1,19 +1,35 @@
+import { Hex } from 'viem';
+
+export type ITokenParams = {
+  CTF: number;
+  audit: number;
+  critical: number;
+  high: number;
+  medium: number;
+  low: number;
+};
+
 export interface ICompetitionInfo {
   id: number;
   amount: bigint;
   weight: bigint;
   weightedAmount: bigint;
-  params: string[];
+  params: ITokenParams;
 }
 
 export interface IAuditorResult {
-  address: string;
+  address: Hex;
   total: bigint;
-  competitions: ICompetitionInfo[];
+  critical: number;
+  high: number;
+  medium: number;
+  low: number;
+  contests: number;
+  competitionsInfo: ICompetitionInfo[];
 }
 
 export interface ICompetitionTopAuditor {
-  address: string;
+  address: Hex;
   amount: bigint;
   weight: bigint;
   weightedAmount: bigint;

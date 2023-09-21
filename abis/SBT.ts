@@ -1,5 +1,4 @@
-import { CONTACTS_STORE_ABI } from 'abis/Contacts';
-import { CONTACTS_STORE, SBT_ADDRESS } from 'config/contracts';
+import { SBT_ADDRESS } from 'config/contracts';
 
 export const SBT_ABI = [
   {

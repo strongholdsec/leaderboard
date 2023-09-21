@@ -1,19 +1,22 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { SBTContractConfig } from 'abis/SBT';
 
+import { EventArgs, EventNames } from 'eventemitter3';
+import { Hex } from 'viem';
 import { usePublicClient } from 'wagmi';
 
-import { IAuditorResult, ICompetitionTop } from './types';
+import { IAuditorResult, ICompetitionTop } from '../types';
 import { STRATEGY_LAZY } from '../utils/cacheStrategies';
+import { parseTokenParams } from '../utils/parseTokenParams';
 
 const SBTTransferEventDetails = {
   ...SBTContractConfig,
-  eventName: 'TransferSingleStarted',
+  eventName: 'TransferSingleStarted' as const,
 };
 
 const SBTGetTokensDetails = {
   ...SBTContractConfig,
-  functionName: 'getTokensData',
+  functionName: 'getTokensData' as const,
 };
 
 type ContestInfo = {
@@ -21,7 +24,7 @@ type ContestInfo = {
   auditorResults: IAuditorResult[] | undefined;
 };
 
-export const useContestInfo = (): UseQueryResult<ContestInfo> => {
+export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
   const client = usePublicClient();
 
   // TODO: Update res on new events
@@ -31,29 +34,30 @@ export const useContestInfo = (): UseQueryResult<ContestInfo> => {
   //   },
   // });
 
-  return useQuery({
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    queryKey: ['swr:contest'],
-    queryFn: async () => {
+  return useQuery<ContestInfo, Error, ContestInfo>(
+    ['swr:contest'],
+    async () => {
       try {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const filter = await client.createContractEventFilter({
+        const filter = await client.createContractEventFilter<
+          typeof SBTTransferEventDetails.abi,
+          EventNames<'TransferSingleStarted'>,
+          EventArgs<any, any>
+        >({
           ...SBTTransferEventDetails,
           fromBlock: 'earliest',
           toBlock: 'latest',
         });
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const mintLogs = await client.getFilterLogs({ filter });
+        const mintLogs = await client.getFilterLogs<
+          typeof SBTTransferEventDetails.abi,
+          EventNames<'TransferSingleStarted'>
+        >({ filter });
 
-        const ids: number[] = [];
-        const users: string[] = [];
+        const ids: bigint[] = [];
+        const users: Hex[] = [];
         const values: bigint[] = [];
 
-        const uniqueUsers: string[] = [];
+        const uniqueUsers: Hex[] = [];
         const competitionIds: number[] = [];
 
         const userResults: { [address: string]: IAuditorResult } = {};
@@ -62,10 +66,8 @@ export const useContestInfo = (): UseQueryResult<ContestInfo> => {
         const seenMints: { [mintId: string]: boolean } = {};
 
         for (const mint of mintLogs) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          const { to, id, value } = mint.args;
-          if (!seenMints[`${to}_${id}`]) {
+          const { to, id, value } = mint['args'];
+          if (to && id && value && !seenMints[`${to}_${id}`]) {
             ids.push(id);
             users.push(to);
             values.push(value);
@@ -76,39 +78,47 @@ export const useContestInfo = (): UseQueryResult<ContestInfo> => {
           }
         }
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         const tokenDatas = await client.readContract({
           ...SBTGetTokensDetails,
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
           args: [ids, users],
         });
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         tokenDatas.forEach((tokenData, i) => {
           const weightedAmount = tokenData.weight * values[i];
+          const params = parseTokenParams(tokenData.params);
+
+          const competitionId = Number(ids[i]);
           const competitionInfo = {
-            id: ids[i],
+            id: competitionId,
             amount: values[i],
             weight: tokenData.weight,
-            params: tokenData.params,
+            params,
             weightedAmount,
           };
 
-          if (!competitionIds.includes(competitionInfo.id))
-            competitionIds.push(competitionInfo.id);
+          if (!competitionIds.includes(competitionId))
+            competitionIds.push(competitionId);
 
           if (!userResults[users[i]]) {
             userResults[users[i]] = {
               address: users[i],
               total: weightedAmount,
-              competitions: [competitionInfo],
+              critical: params.critical,
+              high: params.high,
+              medium: params.medium,
+              low: params.low,
+              contests: 1,
+              competitionsInfo: [competitionInfo],
             };
           } else {
             userResults[users[i]].total += weightedAmount;
-            userResults[users[i]].competitions.push(competitionInfo);
+            userResults[users[i]].critical += params.critical;
+            userResults[users[i]].high += params.high;
+            userResults[users[i]].medium += params.medium;
+            userResults[users[i]].low += params.low;
+            userResults[users[i]].contests += 1;
+
+            userResults[users[i]].competitionsInfo.push(competitionInfo);
           }
 
           const participantInfo = {
@@ -118,13 +128,13 @@ export const useContestInfo = (): UseQueryResult<ContestInfo> => {
             weightedAmount,
           };
 
-          if (!competitionResults[ids[i]]) {
-            competitionResults[ids[i]] = {
-              id: ids[i],
+          if (!competitionResults[competitionId]) {
+            competitionResults[competitionId] = {
+              id: competitionId,
               top: [participantInfo],
             };
           } else {
-            competitionResults[ids[i]].top.push(participantInfo);
+            competitionResults[competitionId].top.push(participantInfo);
           }
         });
 
@@ -152,8 +162,14 @@ export const useContestInfo = (): UseQueryResult<ContestInfo> => {
         };
       } catch (error) {
         console.warn(error);
+        return {
+          auditorResults: undefined,
+          competitionResults: undefined,
+        };
       }
     },
-    ...STRATEGY_LAZY,
-  });
+    {
+      ...STRATEGY_LAZY,
+    },
+  );
 };

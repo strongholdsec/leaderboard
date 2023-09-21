@@ -2,8 +2,8 @@ import type { UseQueryOptions } from '@tanstack/react-query';
 
 const MINUTE_MS = 1000 * 60;
 
-type QueryConfigOptions<DataT = unknown> = Pick<
-  UseQueryOptions<DataT>,
+type QueryConfigOptions<DataT = any> = Pick<
+  UseQueryOptions<DataT, Error>,
   | 'staleTime'
   | 'cacheTime'
   | 'refetchOnMount'
