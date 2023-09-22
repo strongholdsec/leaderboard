@@ -1,0 +1,74 @@
+name: CI/CD Proccess for PROD Application
+
+on:
+  workflow_dispatch:
+  push:
+    branches: 
+      - 'main'
+
+jobs:
+  start:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Send notify on push commit
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🔔 Repository: ${{ github.repository }}
+               ${{ github.actor }} created commit: ${{ github.event.commits[0].message }}
+               Changes: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+
+      - uses: actions/checkout@v2
+
+  # ci:
+  #   uses: ORG/COMPANY-devops-actions/.github/workflows/buildPublishProdImage.yml@main
+  #   with:
+  #       image_name: ORG/IMAGE_NAME
+  #       tag: latest
+  #   secrets:
+  #       registry_username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #       registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
+  #       tele_group: ${{ secrets.TELEGRAM_TO }}
+  #       tele_token: ${{ secrets.TELEGRAM_TOKEN }}
+
+  cd:
+    # needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send telegram message on start CD
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🤖 Robot message: 
+               SERVICE: stronghold-leaderboard
+               MSG : Start CD Process
+
+      - name: Connect to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.IP_SERVER }}
+          username: ${{ secrets.USER_SERVER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/repos/leaderboard/ && git pull
+            cd /opt/repos/leaderboard/ && sudo docker build -t auditor-board .
+            cd /opt/repos/leaderboard/ && sudo docker-compose stop
+            cd /opt/repos/leaderboard/ && sudo docker-compose up -d
+
+
+      - name: Send telegram message on finish CD
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🤖 Robot message: 
+               SERVICE: stronghold-leaderboard
+               RESULT: Deployed on Server!
+            ✅ MSG : Finished CD Process
