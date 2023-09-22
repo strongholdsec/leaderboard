@@ -56,10 +56,10 @@ jobs:
           username: ${{ secrets.USER_SERVER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /opt/repos/leaderboard/ && git pull
-            cd /opt/repos/leaderboard/ && sudo docker build -t auditor-board .
-            cd /opt/repos/leaderboard/ && sudo docker-compose stop
-            cd /opt/repos/leaderboard/ && sudo docker-compose up -d
+            cd /opt/repos/leaderboard/leaderboard/ && git pull
+            cd /opt/repos/leaderboard/leaderboard/ && sudo docker build -t auditor-board .
+            cd /opt/repos/leaderboard/leaderboard/ && sudo docker-compose stop
+            cd /opt/repos/leaderboard/leaderboard/ && sudo docker-compose up -d
 
 
       - name: Send telegram message on finish CD
