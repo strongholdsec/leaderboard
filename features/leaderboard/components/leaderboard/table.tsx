@@ -25,7 +25,7 @@ import { InlineLoader } from '../../../../components/InlineLoader';
 
 type Data = Pick<
   IAuditorResult,
-  'address' | 'total' | 'contests' | 'critical' | 'medium' | 'low' | 'high'
+  'address' | 'total' | 'contests' | 'critical' | 'medium' | 'low' | 'high' | 'raisedUSD'
 >;
 
 interface DisplayData {
@@ -90,6 +90,13 @@ const displayData: readonly DisplayData[] = [
     color: '#02a397',
     width: '13%',
     field: 'low',
+  },
+  {
+    numeric: true,
+    label: 'Rewards',
+    sort: true,
+    width: '18%',
+    field: 'raisedUSD',
   },
 ];
 
@@ -187,6 +194,9 @@ const TableCellContent: FC<TableCellProps> = ({
         </TableCell>
       );
 
+    case 'raisedUSD':
+      return <TableCell width={width}>${value.toLocaleString()}</TableCell>;
+  
     default:
       return <TableCell width={width}>{value}</TableCell>;
   }
@@ -197,7 +207,7 @@ const TableLoadingRows: FC<{ rowsPerPage: number }> = React.memo(
     <>
       {Array.from(Array(rowsPerPage).keys()).map((row) => (
         <TableRow key={`row-${row}`}>
-          {Array.from(Array(8).keys()).map((cell) => (
+          {Array.from(Array(9).keys()).map((cell) => (
             <TableCell key={`cell-${cell}`} height={30}>
               <InlineLoader />
             </TableCell>

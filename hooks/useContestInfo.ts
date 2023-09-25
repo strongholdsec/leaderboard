@@ -8,6 +8,7 @@ import { usePublicClient } from 'wagmi';
 import { IAuditorResult, ICompetitionTop } from '../types';
 import { STRATEGY_LAZY } from '../utils/cacheStrategies';
 import { parseTokenParams } from '../utils/parseTokenParams';
+import { contests } from 'config/contests';
 
 const SBTTransferEventDetails = {
   ...SBTContractConfig,
@@ -62,6 +63,7 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
 
         const userResults: { [address: string]: IAuditorResult } = {};
         const competitionResults: { [id: number]: ICompetitionTop } = {};
+        const competitionTotalPoints: { [id: number]: bigint } = {};
 
         const seenMints: { [mintId: string]: boolean } = {};
 
@@ -109,6 +111,7 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
               low: params.low,
               contests: 1,
               competitionsInfo: [competitionInfo],
+              raisedUSD: 0
             };
           } else {
             userResults[users[i]].total += weightedAmount;
@@ -133,10 +136,23 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
               id: competitionId,
               top: [participantInfo],
             };
+            competitionTotalPoints[competitionId] = values[i];
           } else {
             competitionResults[competitionId].top.push(participantInfo);
+            competitionTotalPoints[competitionId] += values[i];
           }
         });
+
+        uniqueUsers.forEach(
+          (address) => {
+            userResults[address].raisedUSD = 
+            Number(
+              userResults[address].competitionsInfo.map(
+                x => BigInt(contests[x.id].fundUSD ?? 0) * x.amount / competitionTotalPoints[x.id])
+                .reduce((sum, current) => sum + current, BigInt(0))
+            );
+          }
+        )
 
         const packedResults = uniqueUsers.map(
           (address) => userResults[address],
