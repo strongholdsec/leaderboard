@@ -21,11 +21,13 @@ export const contests: IContest[] = [
         id: 3,
         name: 'Moonwell Contest',
         isFarm: false,
+        fundUSD: 5000
     },
     {
         id: 4,
         name: 'Sidechain Oracles Contest',
         isFarm: false,
+        fundUSD: 22500
     },
     {
         id: 5,
