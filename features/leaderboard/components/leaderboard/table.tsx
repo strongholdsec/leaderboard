@@ -123,7 +123,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             >
               <TableSortLabel
                 active={orderBy === headCell.field}
-                direction={orderBy === headCell.field ? order : 'asc'}
+                direction={orderBy === headCell.field ? order : 'desc'}
                 onClick={createSortHandler(headCell.field)}
                 sx={{
                   color: `${headCell.color} !important`,
@@ -225,8 +225,8 @@ export const Leaderboard = () => {
     event: React.MouseEvent<unknown>,
     property: keyof Data,
   ) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isDesc = orderBy === property && order === 'desc';
+    setOrder(isDesc ? 'asc' : 'desc');
     setOrderBy(property);
   };
 
