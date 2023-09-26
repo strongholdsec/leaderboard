@@ -219,7 +219,7 @@ export const Leaderboard = () => {
   const [order, setOrder] = React.useState<Order>('desc');
   const [orderBy, setOrderBy] = React.useState<keyof Data>('total');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(100);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -302,7 +302,7 @@ export const Leaderboard = () => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[100]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
