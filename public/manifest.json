@@ -1,0 +1,17 @@
+{
+    "name": "Stronghold leaderboard",
+    "short_name": "leaderboard",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "#FFFFFF",
+    "background_color": "#FFFFFF",
+    "id": "/",
+    "start_url": "/",
+    "icons": [
+      {
+        "src": "/app_icons/icon.webp",
+        "sizes": "640x640",
+        "type": "image/png"
+      }
+    ]
+  }
