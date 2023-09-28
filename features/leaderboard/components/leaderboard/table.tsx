@@ -18,14 +18,22 @@ import { FC, useMemo } from 'react';
 
 import { AddressBadge } from 'components/AddressBadge';
 
+import { InlineLoader } from 'components/InlineLoader';
+
 import { IAuditorResult } from 'types';
 
 import { getComparator, Order, stableSort } from './utils';
-import { InlineLoader } from '../../../../components/InlineLoader';
 
 type Data = Pick<
   IAuditorResult,
-  'address' | 'total' | 'contests' | 'critical' | 'medium' | 'low' | 'high'
+  | 'address'
+  | 'total'
+  | 'contests'
+  | 'critical'
+  | 'medium'
+  | 'low'
+  | 'high'
+  | 'rewards'
 >;
 
 interface DisplayData {
@@ -43,21 +51,21 @@ const displayData: readonly DisplayData[] = [
     numeric: false,
     label: 'User',
     sort: false,
-    width: '18%',
+    width: '15%',
   },
   {
     field: 'total',
     numeric: true,
     label: 'SBT rating',
     sort: true,
-    width: '13%',
+    width: '10%',
   },
   {
     field: 'contests',
     numeric: true,
     label: 'Contests',
     sort: true,
-    width: '13%',
+    width: '10%',
   },
   {
     field: 'critical',
@@ -65,14 +73,14 @@ const displayData: readonly DisplayData[] = [
     label: 'Critical',
     sort: true,
     color: '#ff394a',
-    width: '13%',
+    width: '10%',
   },
   {
     numeric: true,
     label: 'High',
     sort: true,
     color: '#6b63bd',
-    width: '13%',
+    width: '10%',
     field: 'high',
   },
   {
@@ -80,7 +88,7 @@ const displayData: readonly DisplayData[] = [
     label: 'Medium',
     sort: true,
     color: '#0089d8',
-    width: '13%',
+    width: '10%',
     field: 'medium',
   },
   {
@@ -88,8 +96,15 @@ const displayData: readonly DisplayData[] = [
     label: 'Low',
     sort: true,
     color: '#02a397',
-    width: '13%',
+    width: '10%',
     field: 'low',
+  },
+  {
+    numeric: true,
+    label: 'Rewards',
+    sort: true,
+    width: '13%',
+    field: 'rewards',
   },
 ];
 
@@ -170,6 +185,8 @@ const TableCellContent: FC<TableCellProps> = ({
           <AddressBadge address={value.toString()} symbols={4} />
         </TableCell>
       );
+    case 'rewards':
+      return <TableCell width={width}>${value.toLocaleString()}</TableCell>;
     case 'total':
       return <TableCell width={width}>{value.toLocaleString()}</TableCell>;
     case 'critical':
@@ -197,7 +214,7 @@ const TableLoadingRows: FC<{ rowsPerPage: number }> = React.memo(
     <>
       {Array.from(Array(rowsPerPage).keys()).map((row) => (
         <TableRow key={`row-${row}`}>
-          {Array.from(Array(8).keys()).map((cell) => (
+          {Array.from(Array(displayData.length + 1).keys()).map((cell) => (
             <TableCell key={`cell-${cell}`} height={30}>
               <InlineLoader />
             </TableCell>
@@ -274,7 +291,7 @@ export const Leaderboard = () => {
               {visibleRows.map((row, index) => {
                 return (
                   <TableRow tabIndex={-1} key={`data-${index}`}>
-                    <TableCell width="4%" padding="none">
+                    <TableCell width="2%" padding="none">
                       {index + 1 + page * rowsPerPage}
                     </TableCell>
                     {displayData.map((headCell) => (

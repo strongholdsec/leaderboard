@@ -7,6 +7,7 @@ export type ITokenParams = {
   high: number;
   medium: number;
   low: number;
+  rewards: number;
 };
 
 export interface ICompetitionInfo {
@@ -24,6 +25,7 @@ export interface IAuditorResult {
   high: number;
   medium: number;
   low: number;
+  rewards: number;
   contests: number;
   competitionsInfo: ICompetitionInfo[];
 }

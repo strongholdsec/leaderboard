@@ -84,10 +84,10 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
         });
 
         tokenDatas.forEach((tokenData, i) => {
+          const competitionId = Number(ids[i]);
           const weightedAmount = tokenData.weight * values[i];
           const params = parseTokenParams(tokenData.params);
 
-          const competitionId = Number(ids[i]);
           const competitionInfo = {
             id: competitionId,
             amount: values[i],
@@ -107,6 +107,7 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
               high: params.high,
               medium: params.medium,
               low: params.low,
+              rewards: params.rewards,
               contests: 1,
               competitionsInfo: [competitionInfo],
             };
@@ -116,6 +117,7 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
             userResults[users[i]].high += params.high;
             userResults[users[i]].medium += params.medium;
             userResults[users[i]].low += params.low;
+            userResults[users[i]].rewards += params.rewards;
             userResults[users[i]].contests += 1;
 
             userResults[users[i]].competitionsInfo.push(competitionInfo);
