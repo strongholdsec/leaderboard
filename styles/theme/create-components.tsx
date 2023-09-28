@@ -49,5 +49,21 @@ export const createComponents = ({ palette }: Config): Components => {
         },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: '8px',
+          backgroundColor: palette.background?.default,
+          fontSize: '14px',
+          fontWeight: 400,
+        },
+        input: {
+          padding: '16px 48px 16px 20px',
+        },
+        notchedOutline: {
+          border: 0,
+        },
+      },
+    },
   };
 };
