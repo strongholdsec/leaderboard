@@ -1,5 +1,14 @@
 'use client';
 
+import {
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -23,6 +32,8 @@ import { InlineLoader } from 'components/InlineLoader';
 import { IAuditorResult } from 'types';
 
 import { getComparator, Order, stableSort } from './utils';
+import { useCompetitionIds } from '../../../../hooks/useCompetitionIds';
+import { getLastContestsResults } from '../../../../utils/getLastContestsResults';
 
 type Data = Pick<
   IAuditorResult,
@@ -226,11 +237,35 @@ const TableLoadingRows: FC<{ rowsPerPage: number }> = React.memo(
 );
 TableLoadingRows.displayName = 'TableLoadingRows';
 
+enum FilterOptions {
+  LastContests,
+  AllContests,
+}
+
 export const Leaderboard = () => {
+  const [filterBy, setFilterBy] = React.useState<FilterOptions | ''>(
+    FilterOptions.AllContests,
+  );
+  const handleChange = (event: SelectChangeEvent<FilterOptions>) => {
+    setFilterBy(event.target.value as FilterOptions);
+  };
+
   const { data, isLoading } = useContestInfo();
+  const contestsIds = useCompetitionIds();
+  const lastContestsData: Data[] = useMemo(
+    () =>
+      contestsIds.data && data?.auditorResults
+        ? getLastContestsResults(data.auditorResults, contestsIds.data)
+        : [],
+    [contestsIds.data, data?.auditorResults],
+  );
+
   const rows: Data[] = useMemo(
-    () => (data?.auditorResults as Data[]) ?? [],
-    [data?.auditorResults],
+    () =>
+      filterBy === FilterOptions.AllContests
+        ? (data?.auditorResults as Data[]) ?? []
+        : lastContestsData,
+    [data?.auditorResults, filterBy, lastContestsData],
   );
 
   const [order, setOrder] = React.useState<Order>('desc');
@@ -274,6 +309,30 @@ export const Leaderboard = () => {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper elevation={0} sx={{ width: '100%', mb: 2 }}>
+        <Grid container spacing={4}>
+          <Grid item mb={6} md={6} xs={12}>
+            <FormControl fullWidth>
+              <label id="filter-by-select">
+                <Typography pb={1} fontWeight={600}>
+                  Filter By
+                </Typography>{' '}
+              </label>
+              <Select<FilterOptions>
+                labelId="filter-by-select"
+                value={filterBy}
+                onChange={handleChange}
+              >
+                <MenuItem value={FilterOptions.LastContests}>
+                  Last 3 contests
+                </MenuItem>
+                <MenuItem value={FilterOptions.AllContests}>
+                  All contests
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
+
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
