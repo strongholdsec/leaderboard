@@ -3,7 +3,6 @@
 import {
   FormControl,
   Grid,
-  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -20,10 +19,13 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import { visuallyHidden } from '@mui/utils';
+import { useCompetitionIds } from 'hooks/useCompetitionIds';
 import { useContestInfo } from 'hooks/useContestInfo';
 import * as React from 'react';
 
 import { FC, useMemo } from 'react';
+
+import { getLastContestsResults } from 'utils/getLastContestsResults';
 
 import { AddressBadge } from 'components/AddressBadge';
 
@@ -32,8 +34,6 @@ import { InlineLoader } from 'components/InlineLoader';
 import { IAuditorResult } from 'types';
 
 import { getComparator, Order, stableSort } from './utils';
-import { useCompetitionIds } from '../../../../hooks/useCompetitionIds';
-import { getLastContestsResults } from '../../../../utils/getLastContestsResults';
 
 type Data = Pick<
   IAuditorResult,
