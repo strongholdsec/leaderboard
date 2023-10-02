@@ -19,6 +19,11 @@ export interface ICompetitionInfo {
 }
 
 export interface IAuditorResult {
+  profile: {
+    name: string;
+    avatar: string;
+    address: Hex
+  },
   address: Hex;
   total: bigint;
   critical: number;

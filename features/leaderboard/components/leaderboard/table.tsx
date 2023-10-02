@@ -34,10 +34,11 @@ import { InlineLoader } from 'components/InlineLoader';
 import { IAuditorResult } from 'types';
 
 import { getComparator, Order, stableSort } from './utils';
+import { useEnsName } from 'wagmi';
 
 type Data = Pick<
   IAuditorResult,
-  | 'address'
+  | 'profile'
   | 'total'
   | 'contests'
   | 'critical'
@@ -58,7 +59,7 @@ interface DisplayData {
 
 const displayData: readonly DisplayData[] = [
   {
-    field: 'address',
+    field: 'profile',
     numeric: false,
     label: 'User',
     sort: false,
@@ -190,10 +191,10 @@ const TableCellContent: FC<TableCellProps> = ({
   color,
 }) => {
   switch (field) {
-    case 'address':
+    case 'profile':
       return (
         <TableCell width={width}>
-          <AddressBadge address={value.toString()} symbols={4} />
+          <AddressBadge address={value.address.toString()} name={value.name} avatar={value.avatar} symbols={4} />
         </TableCell>
       );
     case 'rewards':
