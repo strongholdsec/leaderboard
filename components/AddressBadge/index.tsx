@@ -6,6 +6,8 @@ import { IdenticonBadgeStyle, AddressWrapperStyle } from './styles';
 import { Identicon, IdenticonProps } from '../Identicon';
 
 export type AddressBadgeProps = {
+  name: string;
+  avatar: string;
   symbols?: number;
 } & IdenticonProps;
 
@@ -17,21 +19,31 @@ export const AddressBadge = forwardRef(
       address,
       paperStyles,
       svgStyles,
+      name,
+      avatar,
       ...rest
     }: AddressBadgeProps,
     ref?: ForwardedRef<HTMLDivElement>,
   ) => {
     return (
       <IdenticonBadgeStyle {...rest} ref={ref}>
-        <Identicon
-          address={address}
-          diameter={diameter}
-          paperStyles={paperStyles}
-          svgStyles={svgStyles}
-        />
+        {avatar ? (
+          <img
+            alt={'avatar'}
+            src={avatar}
+            style={{ width: 24, height: 24, borderRadius: 20 }}
+          ></img>
+        ) : (
+          <Identicon
+            address={address}
+            diameter={diameter}
+            paperStyles={paperStyles}
+            svgStyles={svgStyles}
+          />
+        )}
         {symbols > 0 ? (
           <AddressWrapperStyle>
-            {formatAddress(address, symbols)}
+            {name || formatAddress(address, symbols)}
           </AddressWrapperStyle>
         ) : (
           ''

@@ -1,23 +1,21 @@
 'use client';
-import { polygon } from '@wagmi/core/chains';
+import { polygon, mainnet } from '@wagmi/core/chains';
 import { EthereumClient, w3mConnectors } from '@web3modal/ethereum';
 import { Web3Modal } from '@web3modal/react';
 import React, { FC, PropsWithChildren } from 'react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { publicProvider } from 'wagmi/providers/public';
-
 import { getBackendRPCPath } from '../config/rpc';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [polygon],
+  [polygon, mainnet],
   [
     jsonRpcProvider({
-      rpc: () => ({
-        http: getBackendRPCPath(),
-      }),
+      rpc: (chain) => ({
+        http: `${getBackendRPCPath()}/${chain.id}`
+      })
     }),
-    // alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_POLYGON_API_KEY }),
     publicProvider(),
   ],
 );

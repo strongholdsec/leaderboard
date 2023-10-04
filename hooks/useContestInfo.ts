@@ -8,6 +8,7 @@ import { usePublicClient } from 'wagmi';
 import { IAuditorResult, ICompetitionTop } from '../types';
 import { STRATEGY_LAZY } from '../utils/cacheStrategies';
 import { parseTokenParams } from '../utils/parseTokenParams';
+import { MultiEnsResolverContractConfig } from 'abis/MultiEnsResolver';
 
 const SBTTransferEventDetails = {
   ...SBTContractConfig,
@@ -26,6 +27,7 @@ type ContestInfo = {
 
 export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
   const client = usePublicClient();
+  const clientMainnet = usePublicClient({chainId: 1});
 
   // TODO: Update res on new events
   // useContractEvent({
@@ -101,6 +103,11 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
 
           if (!userResults[users[i]]) {
             userResults[users[i]] = {
+              profile: {
+                address: users[i],
+                name: '',
+                avatar: ''
+              },
               address: users[i],
               total: weightedAmount,
               critical: params.critical,
@@ -140,8 +147,22 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
           }
         });
 
+        const EnsResolveAddressesDetails = {
+          ...MultiEnsResolverContractConfig,
+          functionName: 'resolveAddresses' as const
+        };
+  
+        const [names, avatars] = await clientMainnet.readContract({
+              ...EnsResolveAddressesDetails,
+              args: [uniqueUsers, ['avatar']],
+          }) as [string[], string[]];
+
         const packedResults = uniqueUsers.map(
-          (address) => userResults[address],
+          (address, i) => {
+            userResults[address].profile.name = names[i];
+            userResults[address].profile.avatar = avatars[i][0];
+            return userResults[address];
+          },
         );
 
         competitionIds.map((id) =>
