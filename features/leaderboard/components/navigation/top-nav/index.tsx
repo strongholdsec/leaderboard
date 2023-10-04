@@ -4,7 +4,6 @@ import {
   Container,
   IconButton,
   Stack,
-  SvgIcon,
   Theme,
   Toolbar,
   useMediaQuery,
@@ -40,7 +39,7 @@ export const TopNav: FC<TopNavProps> = (props) => {
         >
           <Box width="100%" padding={[2, 0]} component="nav">
             <Stack width="100%" direction="row" justifyContent="space-between">
-              <Link display="inline-block" href="/https://strongholdsec.io">
+              <Link display="inline-block" href="https://strongholdsec.io">
                 <Logo width={[165, 200]} />
               </Link>
 

@@ -19,4 +19,8 @@ export const navItems: NavItem[] = [
     title: 'Leaderboard',
     path: 'https://leaderboard.strongholdsec.io',
   },
+  {
+    title: 'Docs',
+    path: 'https://docs.strongholdsec.io/about/intro',
+  },
 ];
