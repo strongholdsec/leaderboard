@@ -6,20 +6,16 @@ import React, { FC, PropsWithChildren } from 'react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { publicProvider } from 'wagmi/providers/public';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-
 import { getBackendRPCPath } from '../config/rpc';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
   [polygon, mainnet],
   [
     jsonRpcProvider({
-      rpc: (chain) => ( chain.id == polygon.id ? {
-        http: getBackendRPCPath(),
-        webSocket: `wss://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`,
-      } : null),
+      rpc: (chain) => ({
+        http: `${getBackendRPCPath()}/${chain.id}`
+      })
     }),
-    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_POLYGON_API_KEY! }),
     publicProvider(),
   ],
 );

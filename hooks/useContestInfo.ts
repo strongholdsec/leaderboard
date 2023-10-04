@@ -182,16 +182,12 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
         return {
           competitionResults: packedCompetitionResults,
           auditorResults: packedResults,
-          names,
-          avatars
         };
       } catch (error) {
         console.warn(error);
         return {
           auditorResults: undefined,
           competitionResults: undefined,
-          names: undefined,
-          avatars: undefined
         };
       }
     },
