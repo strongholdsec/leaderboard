@@ -15,7 +15,6 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     jsonRpcProvider({
       rpc: () => ({
         http: getBackendRPCPath(),
-        webSocket: `wss://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`,
       }),
     }),
     // alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_POLYGON_API_KEY }),
