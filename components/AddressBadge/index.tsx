@@ -27,7 +27,7 @@ export const AddressBadge = forwardRef(
   ) => {
     return (
       <IdenticonBadgeStyle {...rest} ref={ref}>
-        {avatar != '' ? (
+        {avatar ? (
           <img
             alt={'avatar'}
             src={avatar}
@@ -41,10 +41,9 @@ export const AddressBadge = forwardRef(
             svgStyles={svgStyles}
           />
         )}
-
-        {name || symbols > 0 ? (
+        {symbols > 0 ? (
           <AddressWrapperStyle>
-            {name ? name : formatAddress(address, symbols)}
+            {name || formatAddress(address, symbols)}
           </AddressWrapperStyle>
         ) : (
           ''

@@ -160,7 +160,7 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
         const packedResults = uniqueUsers.map(
           (address, i) => {
             userResults[address].profile.name = names[i];
-            userResults[address].profile.avatar = avatars[i];
+            userResults[address].profile.avatar = avatars[i][0];
             return userResults[address];
           },
         );

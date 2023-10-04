@@ -10,8 +10,6 @@ export async function POST(
   { params }: { params: { chainId: string } }
   ) {
   try {
-    console.log(params);
-
     const body = await request.json();
     const requested = await fetch(rpcUrls[params.chainId], {
       method: 'POST',
