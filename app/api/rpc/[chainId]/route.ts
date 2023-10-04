@@ -2,13 +2,13 @@ const DEFAULT_API_ERROR_MESSAGE = 'Something went wrong.';
 
 const rpcUrls = {
   '1': `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`,
-  '137': `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`
-} as {[chainId: string]: string};
+  '137': `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`,
+} as { [chainId: string]: string };
 
 export async function POST(
   request: Request,
-  { params }: { params: { chainId: string } }
-  ) {
+  { params }: { params: { chainId: string } },
+) {
   try {
     const body = await request.json();
     const requested = await fetch(rpcUrls[params.chainId], {
