@@ -69,12 +69,12 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
 
         for (const mint of mintLogs) {
           const { to, id, value } = mint['args'];
-          if (to && id && value && !seenMints[`${to}_${id}`]) {
-            ids.push(id);
-            users.push(to);
-            values.push(value);
-            if (!uniqueUsers.includes(to)) {
-              uniqueUsers.push(to);
+          if (!seenMints[`${to}_${id}`]) {
+            ids.push(id!);
+            users.push(to!);
+            values.push(value!);
+            if (!uniqueUsers.includes(to!)) {
+              uniqueUsers.push(to!);
             }
             seenMints[`${to}_${id}`] = true;
           }
