@@ -9,6 +9,7 @@ import { IAuditorResult, ICompetitionTop } from '../types';
 import { STRATEGY_LAZY } from '../utils/cacheStrategies';
 import { parseTokenParams } from '../utils/parseTokenParams';
 import { MultiEnsResolverContractConfig } from 'abis/MultiEnsResolver';
+import { parseAvatarLink } from 'utils/parseAvatarLink';
 
 const SBTTransferEventDetails = {
   ...SBTContractConfig,
@@ -160,7 +161,7 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
         const packedResults = uniqueUsers.map(
           (address, i) => {
             userResults[address].profile.name = names[i];
-            userResults[address].profile.avatar = avatars[i][0];
+            userResults[address].profile.avatar = parseAvatarLink(avatars[i][0]);
             return userResults[address];
           },
         );
