@@ -372,7 +372,7 @@ export const Leaderboard = () => {
                     height: 53 * emptyRows,
                   }}
                 >
-                  <TableCell colSpan={8} />
+                  <TableCell colSpan={9} />
                 </TableRow>
               )}
             </TableBody>
