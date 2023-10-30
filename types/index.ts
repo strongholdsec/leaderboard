@@ -8,6 +8,10 @@ export type ITokenParams = {
   medium: number;
   low: number;
   rewards: number;
+  uniqueCritical: number;
+  uniqueHigh: number;
+  uniqueMedium: number;
+  uniqueLow: number;
 };
 
 export interface ICompetitionInfo {
