@@ -11,7 +11,9 @@ export const createOptions = (): ThemeOptions => {
   const palette = createPalette();
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const components = createComponents({ palette });
+  const components = createComponents({ palette, theme: baseTheme });
+
+  const typographyCreated = createTypography({ theme: baseTheme });
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -24,7 +26,7 @@ export const createOptions = (): ThemeOptions => {
     direction: 'ltr',
     typography: {
       ...baseTheme.typography,
-      ...createTypography(),
+      ...typographyCreated,
     },
     palette: {
       ...baseTheme.palette,

@@ -1,12 +1,13 @@
-import { PaletteOptions } from '@mui/material';
+import { PaletteOptions, Theme } from '@mui/material';
 import type { Components } from '@mui/material/styles/components';
 import { tableCellClasses } from '@mui/material/TableCell';
 
 interface Config {
   palette: PaletteOptions;
+  theme: Theme;
 }
 
-export const createComponents = ({ palette }: Config): Components => {
+export const createComponents = ({ palette, theme }: Config): Components => {
   return {
     MuiTable: {
       styleOverrides: {
@@ -62,6 +63,43 @@ export const createComponents = ({ palette }: Config): Components => {
         },
         notchedOutline: {
           border: 0,
+        },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+          borderColor: palette?.grey?.[200],
+          borderStyle: 'solid',
+          borderWidth: '1px',
+          boxShadow: 'none',
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: '16px 40px',
+          [theme.breakpoints.down('sm')]: {
+            padding: '16px',
+          },
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        colorPrimary: {
+          backgroundColor: palette?.background?.default,
+        },
+        sizeMedium: {
+          fontSize: '18px',
+          fontWeight: 600,
+          padding: '4px 8px',
+        },
+        sizeSmall: {
+          fontSize: '14px',
+          fontWeight: 600,
         },
       },
     },

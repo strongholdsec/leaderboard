@@ -10,7 +10,7 @@ export type ITokenParams = {
   rewards: number;
 };
 
-export interface ICompetitionInfo {
+export interface ICompetitionResults {
   id: number;
   amount: bigint;
   weight: bigint;
@@ -22,8 +22,8 @@ export interface IAuditorResult {
   profile: {
     name: string;
     avatar: string;
-    address: Hex
-  },
+    address: Hex;
+  };
   address: Hex;
   total: bigint;
   critical: number;
@@ -32,18 +32,14 @@ export interface IAuditorResult {
   low: number;
   rewards: number;
   contests: number;
-  competitionsInfo: ICompetitionInfo[];
+  competitionsInfo: ICompetitionResults[];
 }
 
-export interface ICompetitionTopAuditor {
+export interface ICompetitionAuditor {
   address: Hex;
   amount: bigint;
   weight: bigint;
   weightedAmount: bigint;
-}
-export interface ICompetitionTop {
-  id: number;
-  top: ICompetitionTopAuditor[];
 }
 
 export interface IAuditorContacts {

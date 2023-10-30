@@ -17,24 +17,22 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import { visuallyHidden } from '@mui/utils';
-import { useCompetitionIds } from 'hooks/useCompetitionIds';
-import { useContestInfo } from 'hooks/useContestInfo';
+import { useContestResults } from 'hooks/useContestResults';
+import { useLastContestsResults } from 'hooks/useLastContestsResults';
+import Link from 'next/link';
 import * as React from 'react';
 
 import { FC, useMemo } from 'react';
 
-import { getLastContestsResults } from 'utils/getLastContestsResults';
+import { getComparator, Order, stableSort } from 'utils/tableUtils';
 
 import { AddressBadge } from 'components/AddressBadge';
 
 import { InlineLoader } from 'components/InlineLoader';
 
-import { IAuditorResult } from 'types';
+import { DisplayData, EnhancedTHs } from 'components/Table/components';
 
-import { getComparator, Order, stableSort } from './utils';
-import { useEnsName } from 'wagmi';
+import { IAuditorResult } from 'types';
 
 type Data = Pick<
   IAuditorResult,
@@ -48,16 +46,7 @@ type Data = Pick<
   | 'rewards'
 >;
 
-interface DisplayData {
-  field: keyof Data;
-  label: string;
-  numeric: boolean;
-  sort: boolean;
-  color?: string;
-  width: string;
-}
-
-const displayData: readonly DisplayData[] = [
+const displayData: readonly DisplayData<Data>[] = [
   {
     field: 'profile',
     numeric: false,
@@ -120,63 +109,6 @@ const displayData: readonly DisplayData[] = [
   },
 ];
 
-interface EnhancedTableProps {
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data,
-  ) => void;
-  order: Order;
-  orderBy: string;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const { order, orderBy, onRequestSort } = props;
-  const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property);
-    };
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell>#</TableCell>
-        {displayData.map((headCell) =>
-          headCell.sort ? (
-            <TableCell
-              key={headCell.field}
-              align="left"
-              padding="normal"
-              sortDirection={orderBy === headCell.field ? order : false}
-            >
-              <TableSortLabel
-                active={orderBy === headCell.field}
-                direction={orderBy === headCell.field ? order : 'desc'}
-                onClick={createSortHandler(headCell.field)}
-                sx={{
-                  color: `${headCell.color} !important`,
-                }}
-              >
-                {headCell.label}
-                {orderBy === headCell.field ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === 'desc'
-                      ? 'sorted descending'
-                      : 'sorted ascending'}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </TableCell>
-          ) : (
-            <TableCell key={headCell.field} align="left" padding="normal">
-              {headCell.label}
-            </TableCell>
-          ),
-        )}
-      </TableRow>
-    </TableHead>
-  );
-}
-
 type TableCellProps = {
   field: keyof Data;
   value: any;
@@ -194,7 +126,15 @@ const TableCellContent: FC<TableCellProps> = ({
     case 'profile':
       return (
         <TableCell width={width}>
-          <AddressBadge address={value.address.toString()} name={value.name} avatar={value.avatar} symbols={4} />
+          <Link href={`/profile/${value.address}`}>
+            <AddressBadge
+              height={24}
+              address={value.address.toString()}
+              name={value.name}
+              avatar={value.avatar}
+              symbols={4}
+            />
+          </Link>
         </TableCell>
       );
     case 'rewards':
@@ -251,22 +191,15 @@ export const Leaderboard = () => {
     setFilterBy(event.target.value as FilterOptions);
   };
 
-  const { data, isLoading } = useContestInfo();
-  const contestsIds = useCompetitionIds();
-  const lastContestsData: Data[] = useMemo(
-    () =>
-      contestsIds.data && data?.auditorResults
-        ? getLastContestsResults(data.auditorResults, contestsIds.data)
-        : [],
-    [contestsIds.data, data?.auditorResults],
-  );
+  const { data, isLoading } = useContestResults();
+  const { data: lastContestsData } = useLastContestsResults();
 
   const rows: Data[] = useMemo(
     () =>
       filterBy === FilterOptions.AllContests
-        ? (data?.auditorResults as Data[]) ?? []
-        : lastContestsData,
-    [data?.auditorResults, filterBy, lastContestsData],
+        ? (data?.totalResults as Data[]) ?? []
+        : lastContestsData ?? [],
+    [data?.totalResults, filterBy, lastContestsData],
   );
 
   const [order, setOrder] = React.useState<Order>('desc');
@@ -340,11 +273,18 @@ export const Leaderboard = () => {
             aria-labelledby="tableTitle"
             size="medium"
           >
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
+            <TableHead>
+              <TableRow>
+                <TableCell>#</TableCell>
+                <EnhancedTHs
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                  displayConfig={displayData}
+                />
+              </TableRow>
+            </TableHead>
+
             <TableBody>
               {isLoading && <TableLoadingRows rowsPerPage={rowsPerPage} />}
 

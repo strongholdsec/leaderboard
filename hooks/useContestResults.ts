@@ -1,15 +1,15 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { MultiEnsResolverContractConfig } from 'abis/MultiEnsResolver';
 import { SBTContractConfig } from 'abis/SBT';
 
 import { EventArgs, EventNames } from 'eventemitter3';
+import { parseAvatarLink } from 'utils/parseAvatarLink';
 import { Hex } from 'viem';
 import { usePublicClient } from 'wagmi';
 
-import { IAuditorResult, ICompetitionTop } from '../types';
+import { IAuditorResult, ICompetitionAuditor } from '../types';
 import { STRATEGY_LAZY } from '../utils/cacheStrategies';
 import { parseTokenParams } from '../utils/parseTokenParams';
-import { MultiEnsResolverContractConfig } from 'abis/MultiEnsResolver';
-import { parseAvatarLink } from 'utils/parseAvatarLink';
 
 const SBTTransferEventDetails = {
   ...SBTContractConfig,
@@ -21,14 +21,16 @@ const SBTGetTokensDetails = {
   functionName: 'getTokensData' as const,
 };
 
-type ContestInfo = {
-  competitionResults: ICompetitionTop[] | undefined;
-  auditorResults: IAuditorResult[] | undefined;
+type ContestResult = { [id: number]: ICompetitionAuditor[] };
+
+export type ContestResults = {
+  resultsByCompetition: ContestResult | undefined;
+  totalResults: IAuditorResult[] | undefined;
 };
 
-export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
+export const useContestResults = (): UseQueryResult<ContestResults, Error> => {
   const client = usePublicClient();
-  const clientMainnet = usePublicClient({chainId: 1});
+  const clientMainnet = usePublicClient({ chainId: 1 });
 
   // TODO: Update res on new events
   // useContractEvent({
@@ -37,7 +39,7 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
   //   },
   // });
 
-  return useQuery<ContestInfo, Error, ContestInfo>(
+  return useQuery<ContestResults, Error, ContestResults>(
     ['swr:contest'],
     async () => {
       try {
@@ -64,7 +66,7 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
         const competitionIds: number[] = [];
 
         const userResults: { [address: string]: IAuditorResult } = {};
-        const competitionResults: { [id: number]: ICompetitionTop } = {};
+        const competitionResults: { [id: number]: ICompetitionAuditor[] } = {};
 
         const seenMints: { [mintId: string]: boolean } = {};
 
@@ -107,7 +109,7 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
               profile: {
                 address: users[i],
                 name: '',
-                avatar: ''
+                avatar: '',
               },
               address: users[i],
               total: weightedAmount,
@@ -139,35 +141,32 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
           };
 
           if (!competitionResults[competitionId]) {
-            competitionResults[competitionId] = {
-              id: competitionId,
-              top: [participantInfo],
-            };
+            competitionResults[competitionId] = [participantInfo];
           } else {
-            competitionResults[competitionId].top.push(participantInfo);
+            competitionResults[competitionId].push(participantInfo);
           }
         });
 
         const EnsResolveAddressesDetails = {
           ...MultiEnsResolverContractConfig,
-          functionName: 'resolveAddresses' as const
+          functionName: 'resolveAddresses' as const,
         };
-  
-        const [names, avatars] = await clientMainnet.readContract({
-              ...EnsResolveAddressesDetails,
-              args: [uniqueUsers, ['avatar']],
-          }) as [string[], string[]];
 
-        const packedResults = uniqueUsers.map(
-          (address, i) => {
-            userResults[address].profile.name = names[i];
-            userResults[address].profile.avatar = parseAvatarLink(avatars[i][0]);
-            return userResults[address];
-          },
-        );
+        const [names, avatars] = (await clientMainnet.readContract({
+          ...EnsResolveAddressesDetails,
+          args: [uniqueUsers, ['avatar']],
+        })) as [string[], string[]];
 
+        const packedResults = uniqueUsers.map((address, i) => {
+          userResults[address].profile.name = names[i];
+          userResults[address].profile.avatar = parseAvatarLink(avatars[i][0]);
+          return userResults[address];
+        });
+
+        // Sort all competition scores for every competition
+        // TODO: are we going with weightedAmount or with amount?
         competitionIds.map((id) =>
-          competitionResults[id].top.sort((a, b) =>
+          competitionResults[id].sort((a, b) =>
             a.weightedAmount < b.weightedAmount
               ? -1
               : a.weightedAmount > b.weightedAmount
@@ -176,19 +175,20 @@ export const useContestInfo = (): UseQueryResult<ContestInfo, Error> => {
           ),
         );
 
-        const packedCompetitionResults = competitionIds.map(
-          (id) => competitionResults[id],
+        const packedCompetitionResults = competitionIds.reduce(
+          (acc, val) => ({ ...acc, [val]: competitionResults[val] }),
+          {} as ContestResult,
         );
 
         return {
-          competitionResults: packedCompetitionResults,
-          auditorResults: packedResults,
+          resultsByCompetition: packedCompetitionResults,
+          totalResults: packedResults,
         };
       } catch (error) {
         console.warn(error);
         return {
-          auditorResults: undefined,
-          competitionResults: undefined,
+          totalResults: undefined,
+          resultsByCompetition: undefined,
         };
       }
     },

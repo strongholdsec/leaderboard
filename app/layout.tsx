@@ -1,8 +1,6 @@
 'use client';
 
-import { Footer } from 'features/leaderboard/components/footer';
-import { Layout } from 'features/leaderboard/components/layout';
-import { Navigation } from 'features/leaderboard/components/navigation';
+import { Navigation, Layout, Footer } from 'features/common/layout';
 
 import { Fonts } from 'styles/fonts';
 

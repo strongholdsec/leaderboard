@@ -3,6 +3,8 @@ import GithubIcon from 'assets/icons/github.svg';
 import TelegramIcon from 'assets/icons/telegram.svg';
 import TwitterIcon from 'assets/icons/twitter.svg';
 
+export { EmailIcon, GithubIcon, TelegramIcon, TwitterIcon };
+
 export const socials = [
   {
     icon: TwitterIcon.src,

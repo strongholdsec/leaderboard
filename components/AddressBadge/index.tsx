@@ -2,20 +2,20 @@ import { ForwardedRef, forwardRef } from 'react';
 
 import { formatAddress } from 'utils/utils';
 
-import { IdenticonBadgeStyle, AddressWrapperStyle } from './styles';
-import { Identicon, IdenticonProps } from '../Identicon';
+import { AccountIcon, AccountProps } from 'components/AccountIcon';
 
-export type AddressBadgeProps = {
+import { IdenticonBadgeStyle, AddressWrapperStyle } from './styles';
+
+export type AddressBadgeProps = AccountProps & {
   name: string;
-  avatar: string;
   symbols?: number;
-} & IdenticonProps;
+};
 
 export const AddressBadge = forwardRef(
   (
     {
       symbols = 3,
-      diameter,
+      height,
       address,
       paperStyles,
       svgStyles,
@@ -27,20 +27,13 @@ export const AddressBadge = forwardRef(
   ) => {
     return (
       <IdenticonBadgeStyle {...rest} ref={ref}>
-        {avatar ? (
-          <img
-            alt={'avatar'}
-            src={avatar}
-            style={{ width: 24, height: 24, borderRadius: 20 }}
-          ></img>
-        ) : (
-          <Identicon
-            address={address}
-            diameter={diameter}
-            paperStyles={paperStyles}
-            svgStyles={svgStyles}
-          />
-        )}
+        <AccountIcon
+          height={height}
+          avatar={avatar}
+          address={address}
+          paperStyles={paperStyles}
+          svgStyles={svgStyles}
+        />
         {symbols > 0 ? (
           <AddressWrapperStyle>
             {name || formatAddress(address, symbols)}
