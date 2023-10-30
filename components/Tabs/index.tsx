@@ -2,6 +2,7 @@ import { Tab as BaseTab, tabClasses } from '@mui/base/Tab';
 import { TabPanel as BaseTabPanel } from '@mui/base/TabPanel';
 import { TabsList as BaseTabsList } from '@mui/base/TabsList';
 import { styled } from '@mui/material/styles';
+
 import { neutral } from 'styles/theme/colors';
 
 export const Tab = styled(BaseTab)(({ theme }) => ({

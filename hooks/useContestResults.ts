@@ -1,11 +1,15 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
+
+import { EventArgs, EventNames } from 'eventemitter3';
+
+import { Hex } from 'viem';
+
+import { usePublicClient } from 'wagmi';
+
 import { MultiEnsResolverContractConfig } from 'abis/MultiEnsResolver';
 import { SBTContractConfig } from 'abis/SBT';
 
-import { EventArgs, EventNames } from 'eventemitter3';
 import { parseAvatarLink } from 'utils/parseAvatarLink';
-import { Hex } from 'viem';
-import { usePublicClient } from 'wagmi';
 
 import { IAuditorResult, ICompetitionAuditor } from '../types';
 import { STRATEGY_LAZY } from '../utils/cacheStrategies';

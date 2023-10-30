@@ -3,6 +3,7 @@ import TableCell from '@mui/material/TableCell';
 
 import TableSortLabel from '@mui/material/TableSortLabel';
 import { visuallyHidden } from '@mui/utils';
+
 import { Order } from 'utils/tableUtils';
 
 export interface DisplayData<TData extends Record<string, any>> {

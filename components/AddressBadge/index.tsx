@@ -1,8 +1,8 @@
 import { ForwardedRef, forwardRef } from 'react';
 
-import { formatAddress } from 'utils/utils';
-
 import { AccountIcon, AccountProps } from 'components/AccountIcon';
+
+import { formatAddress } from 'utils/utils';
 
 import { IdenticonBadgeStyle, AddressWrapperStyle } from './styles';
 

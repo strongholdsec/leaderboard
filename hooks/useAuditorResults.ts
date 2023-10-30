@@ -1,9 +1,9 @@
-import { CompetitionInfo } from 'config/competitions';
 import { useMemo, useState } from 'react';
 
-import { descendingComparator } from 'utils/tableUtils';
+import { CompetitionInfo } from 'config/competitions';
 
 import { IAuditorResult } from 'types';
+import { descendingComparator } from 'utils/tableUtils';
 
 import { useCompetitionsInfo } from './useCompetitionsInfo';
 import { useContestResults } from './useContestResults';

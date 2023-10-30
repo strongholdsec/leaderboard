@@ -2,11 +2,12 @@ import { alpha, IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Stack from '@mui/material/Stack';
-import { homeLink, NavItem } from 'config/nav';
+
 import PropTypes from 'prop-types';
 import type { FC } from 'react';
 
 import CloseIcon from 'assets/icons/close.svg';
+import { homeLink, NavItem } from 'config/nav';
 
 import { Socials } from '../../socials';
 import { StyledLink } from '../styled';

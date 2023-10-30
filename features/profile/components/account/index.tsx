@@ -3,16 +3,19 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+
+import numeral from 'numeral';
+
+import React, { FC } from 'react';
+
+import { AccountIcon } from 'components/AccountIcon';
+
+import { MedalIcon } from 'components/Medals';
+
 import { GithubIcon, TelegramIcon, TwitterIcon } from 'config/socials';
 import { SocialIcon } from 'features/common/layout/socials';
 
-import numeral from 'numeral';
-import React, { FC } from 'react';
-
 import { formatAddress } from 'utils/utils';
-
-import { AccountIcon } from 'components/AccountIcon';
-import { MedalIcon } from 'components/Medals';
 
 type AccountSectionProps = {
   title: string;

@@ -1,5 +1,6 @@
-import { CompetitionInfo, getCompetitionInfo } from 'config/competitions';
 import { useMemo } from 'react';
+
+import { CompetitionInfo, getCompetitionInfo } from 'config/competitions';
 
 import { useCompetitionIds } from './useCompetitionIds';
 

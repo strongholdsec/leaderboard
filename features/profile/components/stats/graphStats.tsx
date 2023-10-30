@@ -5,11 +5,13 @@ import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import type { ApexOptions } from 'apexcharts';
-import { guessCompetitionName } from 'config/competitions';
+
 import numeral from 'numeral';
 import type { FC } from 'react';
 
 import { Chart } from 'components/Chart';
+
+import { guessCompetitionName } from 'config/competitions';
 
 const useChartOptions = (): ApexOptions => {
   const theme = useTheme();

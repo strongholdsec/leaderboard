@@ -10,11 +10,10 @@ import {
 } from '@mui/material';
 import Link from '@mui/material/Link';
 
-import { NavItem } from 'config/nav';
-
 import { FC } from 'react';
 
 import MenuIcon from 'assets/icons/menu.svg';
+import { NavItem } from 'config/nav';
 
 import Logo from '../../logo';
 import { StyledLink } from '../styled';

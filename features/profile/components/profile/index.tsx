@@ -5,13 +5,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+
+import React, { useMemo } from 'react';
+
+import { Tab, TabPanel, TabsList } from 'components/Tabs';
+
 import { useAuditorContacts } from 'hooks/useAuditorContacts';
 import { useAuditorResults } from 'hooks/useAuditorResults';
 import { useCompetitionIds } from 'hooks/useCompetitionIds';
 import { useLastContestsAuditorResults } from 'hooks/useLastContestsAuditorResults';
-import React, { useMemo } from 'react';
-
-import { Tab, TabPanel, TabsList } from 'components/Tabs';
 
 import { Account } from '../account';
 import { ContestTable } from '../contests';

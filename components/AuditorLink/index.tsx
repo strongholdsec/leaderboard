@@ -1,4 +1,5 @@
 import Link from 'next/link';
+
 import { formatAddress } from 'utils/utils';
 
 import { AuditorLinkContainer } from './styled';

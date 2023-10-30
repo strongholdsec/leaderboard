@@ -8,9 +8,9 @@ import Typography from '@mui/material/Typography';
 import type { ApexOptions } from 'apexcharts';
 import type { FC } from 'react';
 
-import { issues } from 'styles/theme/colors';
-
 import { Chart } from 'components/Chart';
+
+import { issues } from 'styles/theme/colors';
 
 export type ChartSeries = [number, number, number, number];
 

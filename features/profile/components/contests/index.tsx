@@ -10,18 +10,19 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Stack from '@mui/system/Stack';
-import { AuditorContestsResult } from 'hooks/useAuditorResults';
+
 import numeral from 'numeral';
 import * as React from 'react';
 
 import { FC } from 'react';
 
-import { getComparator, Order, stableSort } from 'utils/tableUtils';
-
 import { InlineLoader } from 'components/InlineLoader';
 
 import { MedalIcon } from 'components/Medals';
 import { DisplayData, EnhancedTHs } from 'components/Table/components';
+
+import { AuditorContestsResult } from 'hooks/useAuditorResults';
+import { getComparator, Order, stableSort } from 'utils/tableUtils';
 
 import { ContestBadge } from '../contestBadge';
 import { FindingsTooltip } from '../findingsTooltip';

@@ -4,6 +4,9 @@ const nextConfig = {
     styledComponents: true,
   },
   output: 'standalone',
+  eslint: {
+    dirs: ['app', 'features', 'components', 'hooks'],
+  },
 };
 
 module.exports = nextConfig;

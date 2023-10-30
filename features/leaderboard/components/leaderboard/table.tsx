@@ -17,14 +17,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { useContestResults } from 'hooks/useContestResults';
-import { useLastContestsResults } from 'hooks/useLastContestsResults';
+
 import Link from 'next/link';
 import * as React from 'react';
 
 import { FC, useMemo } from 'react';
-
-import { getComparator, Order, stableSort } from 'utils/tableUtils';
 
 import { AddressBadge } from 'components/AddressBadge';
 
@@ -32,7 +29,11 @@ import { InlineLoader } from 'components/InlineLoader';
 
 import { DisplayData, EnhancedTHs } from 'components/Table/components';
 
+import { useContestResults } from 'hooks/useContestResults';
+import { useLastContestsResults } from 'hooks/useLastContestsResults';
+
 import { IAuditorResult } from 'types';
+import { getComparator, Order, stableSort } from 'utils/tableUtils';
 
 type Data = Pick<
   IAuditorResult,

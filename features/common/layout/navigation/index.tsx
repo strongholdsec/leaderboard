@@ -1,6 +1,8 @@
 import { Theme, useMediaQuery } from '@mui/material';
-import { navItems } from 'config/nav';
+
 import { FC } from 'react';
+
+import { navItems } from 'config/nav';
 
 import { MobileNav } from './mobile-nav';
 import { useMobileNav } from './mobile-nav/use-mobile-nav';

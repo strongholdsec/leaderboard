@@ -1,9 +1,10 @@
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 
-import { socials } from 'config/socials';
 import Image from 'next/image';
 import React, { FC } from 'react';
+
+import { socials } from 'config/socials';
 
 type SocialIconProps = {
   src: string;

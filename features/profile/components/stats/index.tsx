@@ -4,9 +4,11 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { useCompetitionIds } from 'hooks/useCompetitionIds';
+
 import numeral from 'numeral';
 import { FC } from 'react';
+
+import { useCompetitionIds } from 'hooks/useCompetitionIds';
 
 import { GraphStats } from './graphStats';
 import { ChartSeries, IssuesStats } from './issuesStats';

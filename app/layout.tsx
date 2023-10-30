@@ -2,9 +2,8 @@
 
 import { Navigation, Layout, Footer } from 'features/common/layout';
 
-import { Fonts } from 'styles/fonts';
-
 import { Providers } from 'providers';
+import { Fonts } from 'styles/fonts';
 
 const RootLayout = function RootLayout({
   children,
