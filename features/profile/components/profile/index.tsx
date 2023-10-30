@@ -148,7 +148,12 @@ const Profile: React.FC<ProfileProps> = ({ address }) => {
                 auditorData.auditorResults?.medium ?? 0,
                 auditorData.auditorResults?.low ?? 0,
               ]}
-              uniqueFindings={[3, 1, 1, 5]}
+              uniqueFindings={[
+                auditorData.auditorResults?.uniqueCritical ?? 0,
+                auditorData.auditorResults?.uniqueHigh ?? 0,
+                auditorData.auditorResults?.uniqueMedium ?? 0,
+                auditorData.auditorResults?.uniqueLow ?? 0,
+              ]}
               rewards={auditorData.auditorResults?.rewards ?? 0}
               points={auditorData.auditorResults?.total ?? 0n}
               recentPoints={auditorLastData.lastContestsTotal ?? 0n}

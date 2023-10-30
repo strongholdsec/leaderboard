@@ -34,6 +34,10 @@ export interface IAuditorResult {
   high: number;
   medium: number;
   low: number;
+  uniqueCritical: number;
+  uniqueHigh: number;
+  uniqueMedium: number;
+  uniqueLow: number;
   rewards: number;
   contests: number;
   competitionsInfo: ICompetitionResults[];

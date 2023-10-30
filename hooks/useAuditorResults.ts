@@ -108,7 +108,12 @@ export const useAuditorResults = (address: string) => {
               result.params.medium,
               result.params.low,
             ],
-            uniqueFindings: [0, 0, 0, 0],
+            uniqueFindings: [
+              result.params.uniqueCritical,
+              result.params.uniqueHigh,
+              result.params.uniqueMedium,
+              result.params.uniqueLow,
+            ],
           },
         });
       }
@@ -126,7 +131,12 @@ export const useAuditorResults = (address: string) => {
               result.params.medium,
               result.params.low,
             ],
-            uniqueFindings: [0, 0, 0, 0],
+            uniqueFindings: [
+              result.params.uniqueCritical,
+              result.params.uniqueHigh,
+              result.params.uniqueMedium,
+              result.params.uniqueLow,
+            ],
           },
         });
     });

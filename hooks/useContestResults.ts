@@ -122,6 +122,10 @@ export const useContestResults = (): UseQueryResult<ContestResults, Error> => {
               medium: params.medium,
               low: params.low,
               rewards: params.rewards,
+              uniqueCritical: params.uniqueCritical,
+              uniqueHigh: params.uniqueHigh,
+              uniqueMedium: params.uniqueMedium,
+              uniqueLow: params.uniqueLow,
               contests: 1,
               competitionsInfo: [competitionInfo],
             };
@@ -133,6 +137,10 @@ export const useContestResults = (): UseQueryResult<ContestResults, Error> => {
             userResults[users[i]].low += params.low;
             userResults[users[i]].rewards += params.rewards;
             userResults[users[i]].contests += 1;
+            userResults[users[i]].uniqueCritical += params.uniqueCritical;
+            userResults[users[i]].uniqueHigh += params.uniqueHigh;
+            userResults[users[i]].uniqueMedium += params.uniqueMedium;
+            userResults[users[i]].uniqueLow += params.uniqueLow;
 
             userResults[users[i]].competitionsInfo.push(competitionInfo);
           }
