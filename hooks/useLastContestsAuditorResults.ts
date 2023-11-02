@@ -7,27 +7,32 @@ import { useLastContestsResults } from './useLastContestsResults';
 export const useLastContestsAuditorResults = (address: string) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data: lastContestsResults, isLoading: isLastContestsResultsLoading } =
+  const { data, isLoading: isLastContestsResultsLoading } =
     useLastContestsResults();
 
-  const [lastContestsRank, lastContestsTotal] = useMemo(() => {
+  const [lastContestsRank, lastContestsUsers] = useMemo(() => {
     setIsLoading(true);
 
-    const index = lastContestsResults
+    const index = data?.lastContestsResults
       ?.sort((a, b) => descendingComparator(a, b, 'total'))
       .findIndex((item) => item.address === address);
     if (!index && index !== 0) return [undefined, undefined];
 
     const lastContestsRank = index + 1;
-    const lastContestsTotal = lastContestsResults?.[index].total;
+    const lastContestsUsers =
+      data.lastContestsResults?.filter((competition) =>
+        competition.competitionsInfo.some((r) =>
+          data.lastContestIds.includes(r.id),
+        ),
+      ).length ?? 0;
 
     setIsLoading(false);
 
-    return [lastContestsRank, lastContestsTotal];
-  }, [address, lastContestsResults]);
+    return [lastContestsRank, lastContestsUsers];
+  }, [address, data.lastContestIds, data.lastContestsResults]);
 
   return {
-    data: { lastContestsRank, lastContestsTotal },
+    data: { lastContestsRank, lastContestsUsers },
     isLoading: isLoading || isLastContestsResultsLoading,
   };
 };

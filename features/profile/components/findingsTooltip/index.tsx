@@ -30,9 +30,11 @@ export const FindingsTooltip: FC<FindingsTooltipProps> = ({
   uniqueFindings,
 }) => (
   <Stack direction="row" alignItems="center">
-    {Object.values(findings)
-      .reduce((acc: number, val: number) => acc + val, 0)
-      .toString()}
+    {findings
+      ? Object.values(findings)
+          .reduce((acc: number, val: number) => acc + val, 0)
+          .toString()
+      : ''}
     <HtmlTooltip
       placement="top"
       title={

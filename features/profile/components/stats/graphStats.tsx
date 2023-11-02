@@ -9,11 +9,13 @@ import type { ApexOptions } from 'apexcharts';
 import numeral from 'numeral';
 import type { FC } from 'react';
 
+import React from 'react';
+
 import { Chart } from 'components/Chart';
 
-import { guessCompetitionName } from 'config/competitions';
+type UseChartOptions = (labelsArray?: string[]) => ApexOptions;
 
-const useChartOptions = (): ApexOptions => {
+const useChartOptions: UseChartOptions = (labelsArary) => {
   const theme = useTheme();
 
   return {
@@ -39,7 +41,8 @@ const useChartOptions = (): ApexOptions => {
       },
       x: {
         show: false,
-        formatter: (id) => guessCompetitionName(id - 1),
+        // labels numerations starts with 1
+        formatter: labelsArary ? (id) => labelsArary[id - 1] : undefined,
       },
       y: {
         formatter: undefined,
@@ -112,48 +115,53 @@ const useChartOptions = (): ApexOptions => {
 type GraphStatsProps = {
   points: number;
   data: number[];
+  labelsArray?: string[];
 };
 
-export const GraphStats: FC<GraphStatsProps> = ({ points, data }) => {
-  const chartOptions = useChartOptions();
+export const GraphStats: FC<GraphStatsProps> = React.memo(
+  ({ points, data, labelsArray }) => {
+    const chartOptions = useChartOptions(labelsArray);
 
-  const chartHeight = 155;
-  const formattedPoints = numeral(points).format('0,0');
-  return (
-    <Card raised={false}>
-      <CardContent
-        sx={{
-          position: 'relative',
-          paddingTop: 3,
-          ':last-child': { paddingBottom: 2 },
-        }}
-      >
-        <Stack spacing={3} direction="column" justifyContent="space-between">
-          <Box sx={{ position: 'absolute' }}>
-            <Typography variant="caption">Total Points</Typography>
-            <Typography variant="h3">{formattedPoints}</Typography>
-          </Box>
+    const chartHeight = 155;
+    const formattedPoints = numeral(points).format('0,0');
+    return (
+      <Card raised={false}>
+        <CardContent
+          sx={{
+            position: 'relative',
+            paddingTop: 3,
+            ':last-child': { paddingBottom: 2 },
+          }}
+        >
+          <Stack spacing={3} direction="column" justifyContent="space-between">
+            <Box sx={{ position: 'absolute' }}>
+              <Typography variant="caption">Total Points</Typography>
+              <Typography variant="h3">{formattedPoints}</Typography>
+            </Box>
 
-          <Box
-            sx={{
-              height: chartHeight,
-              position: 'relative',
-            }}
-          >
-            <Chart
-              height={chartHeight}
-              options={chartOptions}
-              series={[
-                {
-                  name: 'Points',
-                  data,
-                },
-              ]}
-              type="area"
-            />
-          </Box>
-        </Stack>
-      </CardContent>
-    </Card>
-  );
-};
+            <Box
+              sx={{
+                height: chartHeight,
+                position: 'relative',
+              }}
+            >
+              <Chart
+                height={chartHeight}
+                options={chartOptions}
+                series={[
+                  {
+                    name: 'Points',
+                    data,
+                  },
+                ]}
+                type="area"
+              />
+            </Box>
+          </Stack>
+        </CardContent>
+      </Card>
+    );
+  },
+);
+
+GraphStats.displayName = 'GraphStats';

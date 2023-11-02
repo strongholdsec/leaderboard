@@ -1,10 +1,14 @@
-import { useMediaQuery, useTheme } from '@mui/material';
+import {
+  BoxProps,
+  CircularProgress,
+  Grid,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-
-import numeral from 'numeral';
 
 import React, { FC } from 'react';
 
@@ -17,14 +21,18 @@ import { SocialIcon } from 'features/common/layout/socials';
 
 import { formatAddress } from 'utils/utils';
 
-type AccountSectionProps = {
+type AccountSectionProps = BoxProps & {
   title: string;
   children: React.ReactNode;
 };
 
-const AccountSection: FC<AccountSectionProps> = ({ title, children }) => {
+const AccountSection: FC<AccountSectionProps> = ({
+  title,
+  children,
+  ...props
+}) => {
   return (
-    <Box>
+    <Box {...props}>
       <Typography variant="h4" mb={2}>
         {title}
       </Typography>
@@ -87,14 +95,16 @@ type AccountProps = {
     github: string;
   };
   rank: {
-    allTime: number | undefined;
-    n90days: number | undefined;
-    top: number | undefined;
+    allTimeRank: number | undefined;
+    allTimeUsers: number | undefined;
+    recentRank: number | undefined;
+    recentUsers: number | undefined;
   };
   achievements: {
     title: string;
     value: 1 | 2 | 3;
   }[];
+  isLoading: boolean;
 };
 
 export const Account: FC<AccountProps> = ({
@@ -104,6 +114,7 @@ export const Account: FC<AccountProps> = ({
   achievements,
   socials,
   rank,
+  isLoading,
 }) => {
   const theme = useTheme();
   const onlySmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -172,33 +183,48 @@ export const Account: FC<AccountProps> = ({
       >
         <AccountSection title="Rank">
           <Stack direction="row" alignItems="center" spacing={2}>
-            <RankChip color="black" title="All time" value={rank.allTime} />
-            <RankChip title="Last 3 contests" value={rank.n90days} />
-            <RankChip
-              title="Top"
-              value={
-                rank.top
-                  ? numeral(Math.ceil(rank.top)).format('0') + '%'
-                  : 'N/A'
-              }
-            />
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              <>
+                <RankChip
+                  color="black"
+                  title="All time"
+                  value={
+                    rank.allTimeRank && rank.allTimeUsers
+                      ? `#${rank.allTimeRank} of ${rank.allTimeUsers}`
+                      : 'N/A'
+                  }
+                />
+                <RankChip
+                  title="Last 3 contests"
+                  value={
+                    rank.recentRank && rank.recentUsers
+                      ? `#${rank.recentRank} of ${rank.recentUsers}`
+                      : 'N/A'
+                  }
+                />
+              </>
+            )}
           </Stack>
         </AccountSection>
 
         {achievements.length > 0 && (
-          <AccountSection title="Achievements">
-            <Stack
+          <AccountSection sx={{ flex: 1 }} title="Achievements">
+            <Grid
+              container
               direction={{ lg: 'column', md: 'row', sm: 'column' }}
-              spacing={{ md: 4, xs: 2, lg: 2 }}
+              spacing={{ md: 2, xs: 2, lg: 2 }}
             >
               {achievements.map((achievement) => (
-                <AchievementChip
-                  key={achievement.title}
-                  title={achievement.title}
-                  value={achievement.value}
-                />
+                <Grid item key={achievement.title}>
+                  <AchievementChip
+                    title={achievement.title}
+                    value={achievement.value}
+                  />
+                </Grid>
               ))}
-            </Stack>
+            </Grid>
           </AccountSection>
         )}
       </Stack>

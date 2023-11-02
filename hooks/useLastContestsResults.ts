@@ -1,24 +1,27 @@
-import { LAST_CONTESTS_IDS_NUMBER } from 'config/constants';
-import { compareDesc } from 'date-fns';
+import { compareAsc } from 'date-fns';
 import { useMemo, useState } from 'react';
 
+import { LAST_CONTESTS_IDS_NUMBER } from 'config/constants';
+
 import { useContests } from './useCompetitionsInfo';
-import { useContestResults } from './useContestResults';
+import { useCompetitionsResults } from './useCompetitionsResults';
 
 export const useLastContestsResults = () => {
-  const { data, isLoading: isContestResultsLoading } = useContestResults();
+  const { data, isLoading: isContestResultsLoading } = useCompetitionsResults();
   const contests = useContests();
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const lastContestsData = useMemo(() => {
-    if (!contests.data || !data?.totalResults) return;
-    const lastContestIds = contests.data
-      .sort((a, b) => compareDesc(a.endDate, b.endDate))
-      .slice(-LAST_CONTESTS_IDS_NUMBER)
-      .map((elem) => elem.id);
+  const returnValue = useMemo(() => {
+    if (!contests.data || !data?.totalResults)
+      return { lastContestIds: undefined, lastContestsResults: undefined };
 
     setIsLoading(true);
+
+    const lastContestIds = contests.data
+      .sort((a, b) => compareAsc(a.endDate, b.endDate))
+      .slice(-LAST_CONTESTS_IDS_NUMBER)
+      .map((elem) => elem.id);
 
     const lastContestsResults = data?.totalResults.map((auditorResult) => {
       const auditorRes = auditorResult.competitionsInfo.reduce(
@@ -53,11 +56,14 @@ export const useLastContestsResults = () => {
 
     setIsLoading(false);
 
-    return lastContestsResults;
+    return {
+      lastContestIds,
+      lastContestsResults,
+    };
   }, [contests.data, data?.totalResults]);
 
   return {
-    data: lastContestsData,
+    data: returnValue,
     isLoading: isContestResultsLoading || isLoading,
   };
 };

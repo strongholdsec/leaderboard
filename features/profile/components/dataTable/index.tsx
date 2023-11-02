@@ -1,5 +1,6 @@
 'use client';
 
+import { TableHead } from '@mui/material';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -21,51 +22,18 @@ import { InlineLoader } from 'components/InlineLoader';
 import { MedalIcon } from 'components/Medals';
 import { DisplayData, EnhancedTHs } from 'components/Table/components';
 
-import { AuditorFarmsResult } from 'hooks/useAuditorResults';
-import { getComparator, Order, stableSort } from 'utils/tableUtils';
+import { CompetitionData } from 'hooks/useAuditorResults';
+import {
+  Comparators,
+  getComparator,
+  Order,
+  stableSort,
+} from 'utils/tableUtils';
 
 import { ContestBadge } from '../contestBadge';
 import { FindingsTooltip } from '../findingsTooltip';
 
-type Data = AuditorFarmsResult;
-
-const displayData: readonly DisplayData<Data>[] = [
-  {
-    field: 'contest',
-    numeric: false,
-    label: 'Name',
-    sort: false,
-    width: '30%',
-  },
-  {
-    field: 'rank',
-    numeric: true,
-    label: 'Rank',
-    sort: true,
-    width: '14%',
-  },
-  {
-    field: 'CTFPoints',
-    numeric: true,
-    label: 'CTF Points',
-    sort: true,
-    width: '14%',
-  },
-  {
-    numeric: true,
-    label: 'Audit Points',
-    sort: true,
-    width: '14%',
-    field: 'auditPoints',
-  },
-  {
-    numeric: true,
-    label: 'Findings',
-    sort: true,
-    width: '14%',
-    field: 'findings',
-  },
-];
+type Data = CompetitionData;
 
 type TableCellProps = {
   field: keyof Data;
@@ -75,7 +43,7 @@ type TableCellProps = {
 
 const TableCellContent: FC<TableCellProps> = ({ field, value, width }) => {
   switch (field) {
-    case 'contest':
+    case 'competition':
       return (
         <TableCell width={width}>
           <ContestBadge
@@ -86,8 +54,13 @@ const TableCellContent: FC<TableCellProps> = ({ field, value, width }) => {
           />
         </TableCell>
       );
-    case 'auditPoints':
-    case 'CTFPoints':
+    case 'rewards':
+      return (
+        <TableCell width={width}>
+          {value === 0 ? '-' : numeral(value).format('$0,0')}
+        </TableCell>
+      );
+    case 'points':
       return (
         <TableCell width={width}>{numeral(value).format('0,0')}</TableCell>
       );
@@ -96,9 +69,11 @@ const TableCellContent: FC<TableCellProps> = ({ field, value, width }) => {
         <TableCell width={width}>
           <Stack direction="row" spacing={1} alignItems="center">
             <span>
-              {value.user} / {value.total}
+              {value.userRank ?? 'N/A'} / {value.users ?? 'N/A'}
             </span>
-            {value.user <= 3 && <MedalIcon place={value.user} />}
+            {value.userRank && value.userRank <= 3 && (
+              <MedalIcon place={value.userRank} />
+            )}
           </Stack>
         </TableCell>
       );
@@ -106,8 +81,13 @@ const TableCellContent: FC<TableCellProps> = ({ field, value, width }) => {
       return (
         <TableCell width={width}>
           <FindingsTooltip
-            findings={value.issues}
-            uniqueFindings={value.uniqueFindings}
+            findings={[value.critical, value.high, value.medium, value.low]}
+            uniqueFindings={[
+              value.uniqueCritical,
+              value.uniqueHigh,
+              value.uniqueMedium,
+              value.uniqueLow,
+            ]}
           />
         </TableCell>
       );
@@ -117,12 +97,12 @@ const TableCellContent: FC<TableCellProps> = ({ field, value, width }) => {
   }
 };
 
-const TableLoadingRows: FC<{ rowsPerPage: number }> = React.memo(
-  ({ rowsPerPage }) => (
+const TableLoadingRows: FC<{ rowsPerPage: number; columns: number }> =
+  React.memo(({ rowsPerPage, columns }) => (
     <>
       {Array.from(Array(rowsPerPage).keys()).map((row) => (
         <TableRow key={`row-${row}`}>
-          {Array.from(Array(displayData.length + 1).keys()).map((cell) => (
+          {Array.from(Array(columns + 1).keys()).map((cell) => (
             <TableCell key={`cell-${cell}`} height={30}>
               <InlineLoader />
             </TableCell>
@@ -130,21 +110,27 @@ const TableLoadingRows: FC<{ rowsPerPage: number }> = React.memo(
         </TableRow>
       ))}
     </>
-  ),
-);
+  ));
 
 TableLoadingRows.displayName = 'TableLoadingRows';
 
-type FarmsTableProps = {
+type ContestTableProps = {
   rows: Data[];
   isLoading: boolean;
+  displayData: readonly DisplayData<Data>[];
+  descendingComparators?: Comparators<Data>;
 };
 
-export const FarmsTable = ({ rows, isLoading }: FarmsTableProps) => {
+export const DataTable = ({
+  rows,
+  isLoading,
+  displayData,
+  descendingComparators,
+}: ContestTableProps) => {
   const [order, setOrder] = React.useState<Order>('desc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('CTFPoints');
+  const [orderBy, setOrderBy] = React.useState<keyof Data>('points');
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(100);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -172,29 +158,39 @@ export const FarmsTable = ({ rows, isLoading }: FarmsTableProps) => {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      ),
-    [order, orderBy, page, rows, rowsPerPage],
+      stableSort(
+        rows,
+        getComparator(order, orderBy, descendingComparators),
+      ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    [descendingComparators, order, orderBy, page, rows, rowsPerPage],
   );
 
   return (
     <Box sx={{ width: '100%' }}>
-      <TableContainer component={Paper} elevation={0}>
+      <TableContainer elevation={0} component={Paper}>
         <Table
           sx={{ minWidth: 850 }}
           aria-labelledby="tableTitle"
           size="medium"
         >
-          <EnhancedTHs
-            order={order}
-            orderBy={orderBy}
-            onRequestSort={handleRequestSort}
-            displayConfig={displayData}
-          />
+          <TableHead>
+            <TableRow>
+              <EnhancedTHs
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+                displayConfig={displayData}
+              />
+            </TableRow>
+          </TableHead>
+
           <TableBody>
-            {isLoading && <TableLoadingRows rowsPerPage={rowsPerPage} />}
+            {isLoading && (
+              <TableLoadingRows
+                columns={displayData.length}
+                rowsPerPage={rowsPerPage}
+              />
+            )}
 
             {visibleRows.map((row, index) => {
               return (
@@ -222,6 +218,7 @@ export const FarmsTable = ({ rows, isLoading }: FarmsTableProps) => {
           </TableBody>
         </Table>
       </TableContainer>
+
       <TablePagination
         rowsPerPageOptions={[100]}
         component="div"

@@ -39,7 +39,7 @@ export interface IAuditorResult {
   uniqueMedium: number;
   uniqueLow: number;
   rewards: number;
-  contests: number;
+  competitions: number;
   competitionsInfo: ICompetitionResults[];
 }
 
@@ -53,3 +53,10 @@ export interface ICompetitionAuditor {
 export interface IAuditorContacts {
   [auditor: string]: { [socialNetwork: string]: string };
 }
+
+export type CompetitionResult = { [id: number]: ICompetitionAuditor[] };
+
+export type CompetitonResults = {
+  resultsByCompetition: CompetitionResult | undefined;
+  totalResults: IAuditorResult[] | undefined;
+};

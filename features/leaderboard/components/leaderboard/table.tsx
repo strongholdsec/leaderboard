@@ -29,7 +29,7 @@ import { InlineLoader } from 'components/InlineLoader';
 
 import { DisplayData, EnhancedTHs } from 'components/Table/components';
 
-import { useContestResults } from 'hooks/useContestResults';
+import { useCompetitionsResults } from 'hooks/useCompetitionsResults';
 import { useLastContestsResults } from 'hooks/useLastContestsResults';
 
 import { IAuditorResult } from 'types';
@@ -39,7 +39,7 @@ type Data = Pick<
   IAuditorResult,
   | 'profile'
   | 'total'
-  | 'contests'
+  | 'competitions'
   | 'critical'
   | 'medium'
   | 'low'
@@ -63,7 +63,7 @@ const displayData: readonly DisplayData<Data>[] = [
     width: '10%',
   },
   {
-    field: 'contests',
+    field: 'competitions',
     numeric: true,
     label: 'Contests',
     sort: true,
@@ -192,14 +192,14 @@ export const Leaderboard = () => {
     setFilterBy(event.target.value as FilterOptions);
   };
 
-  const { data, isLoading } = useContestResults();
+  const { data, isLoading } = useCompetitionsResults();
   const { data: lastContestsData } = useLastContestsResults();
 
   const rows: Data[] = useMemo(
     () =>
       filterBy === FilterOptions.AllContests
         ? (data?.totalResults as Data[]) ?? []
-        : lastContestsData ?? [],
+        : lastContestsData.lastContestsResults ?? [],
     [data?.totalResults, filterBy, lastContestsData],
   );
 

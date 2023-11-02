@@ -10,13 +10,22 @@ export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
 export type Order = 'asc' | 'desc';
 
-export function getComparator<Key extends keyof any>(
+export type Comparator<T> = (a: T, b: T) => 1 | -1 | 0;
+
+export type Comparators<T> = {
+  [K in keyof T]?: Comparator<T>;
+};
+
+export function getComparator<T, Key extends keyof T>(
   order: Order,
   orderBy: Key,
-): (
-  a: { [key in Key]: number | string | bigint | any },
-  b: { [key in Key]: number | string | bigint | any },
-) => number {
+  descendingComparators?: Comparators<T>,
+): (a: T, b: T) => number {
+  if (descendingComparators && descendingComparators[orderBy])
+    return order === 'desc'
+      ? (a, b) => descendingComparators[orderBy]!(a, b)
+      : (a, b) => -descendingComparators[orderBy]!(a, b);
+
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);

@@ -25,14 +25,17 @@ const SBTGetTokensDetails = {
   functionName: 'getTokensData' as const,
 };
 
-type ContestResult = { [id: number]: ICompetitionAuditor[] };
+type CompetitionResult = { [id: number]: ICompetitionAuditor[] };
 
-export type ContestResults = {
-  resultsByCompetition: ContestResult | undefined;
+export type CompetitonResults = {
+  resultsByCompetition: CompetitionResult | undefined;
   totalResults: IAuditorResult[] | undefined;
 };
 
-export const useContestResults = (): UseQueryResult<ContestResults, Error> => {
+export const useCompetitionsResults = (): UseQueryResult<
+  CompetitonResults,
+  Error
+> => {
   const client = usePublicClient();
   const clientMainnet = usePublicClient({ chainId: 1 });
 
@@ -42,8 +45,10 @@ export const useContestResults = (): UseQueryResult<ContestResults, Error> => {
   //   listener(setContactLog) {
   //   },
   // });
+  // Turns out we don't realy need constant updating of that info,
+  // because it fills out only after a contest, not during one
 
-  return useQuery<ContestResults, Error, ContestResults>(
+  return useQuery<CompetitonResults, Error, CompetitonResults>(
     ['swr:contest'],
     async () => {
       try {
@@ -126,7 +131,7 @@ export const useContestResults = (): UseQueryResult<ContestResults, Error> => {
               uniqueHigh: params.uniqueHigh,
               uniqueMedium: params.uniqueMedium,
               uniqueLow: params.uniqueLow,
-              contests: 1,
+              competitions: 1,
               competitionsInfo: [competitionInfo],
             };
           } else {
@@ -136,7 +141,7 @@ export const useContestResults = (): UseQueryResult<ContestResults, Error> => {
             userResults[users[i]].medium += params.medium;
             userResults[users[i]].low += params.low;
             userResults[users[i]].rewards += params.rewards;
-            userResults[users[i]].contests += 1;
+            userResults[users[i]].competitions += 1;
             userResults[users[i]].uniqueCritical += params.uniqueCritical;
             userResults[users[i]].uniqueHigh += params.uniqueHigh;
             userResults[users[i]].uniqueMedium += params.uniqueMedium;
@@ -189,7 +194,7 @@ export const useContestResults = (): UseQueryResult<ContestResults, Error> => {
 
         const packedCompetitionResults = competitionIds.reduce(
           (acc, val) => ({ ...acc, [val]: competitionResults[val] }),
-          {} as ContestResult,
+          {} as CompetitionResult,
         );
 
         return {

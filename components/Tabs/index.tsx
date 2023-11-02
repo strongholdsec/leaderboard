@@ -19,6 +19,11 @@ export const Tab = styled(BaseTab)(({ theme }) => ({
   justifyContent: 'flex-start',
   color: theme?.palette?.grey[300],
 
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '18px',
+    padding: '6px 12px',
+  },
+
   '&:hover': {},
 
   '&:focus': {
