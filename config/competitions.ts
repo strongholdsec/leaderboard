@@ -1,8 +1,8 @@
 import FantomIcon from 'assets/icons/fantom.jpg';
-import FarmAutumn from 'assets/icons/farm[autumn].svg';
-import FarmSpring from 'assets/icons/farm[spring].svg';
-// import FarmSummer from 'assets/icons/farm[summer].svg';
-import FarmWinter from 'assets/icons/farm[winter].svg';
+import FarmAutumn from 'assets/icons/farm_autumn.svg';
+import FarmSpring from 'assets/icons/farm_spring.svg';
+// import FarmSummer from 'assets/icons/farm_summer.svg';
+import FarmWinter from 'assets/icons/farm_winter.svg';
 import LidoIcon from 'assets/icons/lido.svg';
 import MoonwellIcon from 'assets/icons/moonwel.svg';
 

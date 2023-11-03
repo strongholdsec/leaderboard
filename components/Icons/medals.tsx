@@ -3,12 +3,12 @@ import Image from 'next/image';
 import React from 'react';
 
 import ContesterIcon from 'assets/icons/contester.svg';
-import Place1Icon from 'assets/icons/place[1].svg';
-import Place2Icon from 'assets/icons/place[2].svg';
-import Place3Icon from 'assets/icons/place[3].svg';
-import Place4Icon from 'assets/icons/place[4].svg';
-import Place5Icon from 'assets/icons/place[5].svg';
-import Place6Icon from 'assets/icons/place[6].svg';
+import Place1Icon from 'assets/icons/place_1.svg';
+import Place2Icon from 'assets/icons/place_2.svg';
+import Place3Icon from 'assets/icons/place_3.svg';
+import Place4Icon from 'assets/icons/place_4.svg';
+import Place5Icon from 'assets/icons/place_5.svg';
+import Place6Icon from 'assets/icons/place_6.svg';
 
 interface MedalIconProps {
   place: 0 | 1 | 2 | 3 | 4 | 5 | 6;
