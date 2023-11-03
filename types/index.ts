@@ -14,7 +14,7 @@ export type ITokenParams = {
   uniqueLow: number;
 };
 
-export interface ICompetitionInfo {
+export interface ICompetitionResults {
   id: number;
   amount: bigint;
   weight: bigint;
@@ -26,30 +26,37 @@ export interface IAuditorResult {
   profile: {
     name: string;
     avatar: string;
-    address: Hex
-  },
+    address: Hex;
+  };
   address: Hex;
   total: bigint;
   critical: number;
   high: number;
   medium: number;
   low: number;
+  uniqueCritical: number;
+  uniqueHigh: number;
+  uniqueMedium: number;
+  uniqueLow: number;
   rewards: number;
-  contests: number;
-  competitionsInfo: ICompetitionInfo[];
+  competitions: number;
+  competitionsInfo: ICompetitionResults[];
 }
 
-export interface ICompetitionTopAuditor {
+export interface ICompetitionAuditor {
   address: Hex;
   amount: bigint;
   weight: bigint;
   weightedAmount: bigint;
 }
-export interface ICompetitionTop {
-  id: number;
-  top: ICompetitionTopAuditor[];
-}
 
 export interface IAuditorContacts {
   [auditor: string]: { [socialNetwork: string]: string };
 }
+
+export type CompetitionResult = { [id: number]: ICompetitionAuditor[] };
+
+export type CompetitonResults = {
+  resultsByCompetition: CompetitionResult | undefined;
+  totalResults: IAuditorResult[] | undefined;
+};

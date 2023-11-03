@@ -1,12 +1,9 @@
 'use client';
 
-import { Footer } from 'features/leaderboard/components/footer';
-import { Layout } from 'features/leaderboard/components/layout';
-import { Navigation } from 'features/leaderboard/components/navigation';
-
-import { Fonts } from 'styles/fonts';
+import { Navigation, Layout, Footer } from 'features/common/layout';
 
 import { Providers } from 'providers';
+import { Fonts } from 'styles/fonts';
 
 const RootLayout = function RootLayout({
   children,

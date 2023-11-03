@@ -4,12 +4,14 @@ import {
   QueryObserver,
   useQueryClient,
 } from '@tanstack/react-query';
-import { ContactContractConfig } from 'abis/Contacts';
 
 import { EventArgs, EventNames } from 'eventemitter3';
 import { useEffect, useState } from 'react';
-import { STRATEGY_CONSTANT } from 'utils/cacheStrategies';
+
 import { useContractEvent, usePublicClient } from 'wagmi';
+
+import { ContactContractConfig } from 'abis/Contacts';
+import { STRATEGY_CONSTANT } from 'utils/cacheStrategies';
 
 import { IAuditorContacts } from '../types';
 import { parseContactDetails } from '../utils/parseContactDetails';

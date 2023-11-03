@@ -1,12 +1,17 @@
+import { Theme } from '@mui/material';
 import type { TypographyOptions } from '@mui/material/styles/createTypography';
 
-export const createTypography = (): TypographyOptions => {
+interface Config {
+  theme: Theme;
+}
+
+export const createTypography = ({ theme }: Config): TypographyOptions => {
   return {
     fontFamily:
       '"Gilroy", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji"',
     body1: {
-      fontSize: '1rem',
-      fontWeight: 400,
+      fontSize: '16',
+      fontWeight: 600,
       lineHeight: 1.5,
     },
     body2: {
@@ -18,19 +23,19 @@ export const createTypography = (): TypographyOptions => {
       fontWeight: 600,
     },
     caption: {
-      fontSize: '12px',
-      fontWeight: 400,
+      fontSize: '14px',
+      fontWeight: 600,
       lineHeight: 1.55,
     },
     subtitle1: {
-      fontSize: '1rem',
+      fontSize: '12px',
       fontWeight: 500,
       lineHeight: 1.57,
     },
     subtitle2: {
-      fontSize: '0.875rem',
-      fontWeight: 500,
-      lineHeight: 1.57,
+      fontSize: '10px',
+      fontWeight: 600,
+      lineHeight: '11px',
     },
     overline: {
       fontSize: '0.75rem',
@@ -40,27 +45,30 @@ export const createTypography = (): TypographyOptions => {
       textTransform: 'uppercase',
     },
     h1: {
-      fontWeight: 700,
-      fontSize: '38px',
+      fontWeight: 600,
+      fontSize: '42px',
       lineHeight: 1.23,
     },
     h2: {
-      fontWeight: 700,
-      fontSize: '3rem',
-      lineHeight: 1.2,
-    },
-    h3: {
-      fontWeight: 700,
-      fontSize: '2.25rem',
-      lineHeight: 1.2,
+      fontWeight: 600,
+      fontSize: '36px',
+      lineHeight: 1.23,
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '28px',
+      },
     },
     h4: {
-      fontWeight: 700,
-      fontSize: '2rem',
-      lineHeight: 1.2,
+      fontWeight: 600,
+      fontSize: '22px',
+      lineHeight: 1.35,
+    },
+    h3: {
+      fontWeight: 600,
+      fontSize: '28px',
+      lineHeight: 1.23,
     },
     h5: {
-      fontWeight: 700,
+      fontWeight: 600,
       fontSize: '1.5rem',
       lineHeight: 1.2,
     },

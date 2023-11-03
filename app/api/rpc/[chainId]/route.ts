@@ -1,9 +1,6 @@
-const DEFAULT_API_ERROR_MESSAGE = 'Something went wrong.';
+import { rpcUrls } from 'config/rpc';
 
-const rpcUrls = {
-  '1': `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`,
-  '137': `https://polygon-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_POLYGON_API_KEY}`,
-} as { [chainId: string]: string };
+const DEFAULT_API_ERROR_MESSAGE = 'Something went wrong.';
 
 export async function POST(
   request: Request,
