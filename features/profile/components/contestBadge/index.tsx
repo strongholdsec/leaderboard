@@ -2,15 +2,15 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+
 import format from 'date-fns/format';
 import { ForwardedRef, forwardRef } from 'react';
 
-export type ContestBadgeProps = {
-  title: string;
-  startDate: Date;
-  endDate: Date;
-  imageSrc?: string;
-};
+import { EventsIcon } from 'components/Icons/events';
+
+import { CompetitionInfo } from 'config/competitions';
+
+export type ContestBadgeProps = Partial<CompetitionInfo>;
 
 function stringAvatar(name: string) {
   const nameParts = name.split(' ');
@@ -23,29 +23,32 @@ function stringAvatar(name: string) {
 
 export const ContestBadge = forwardRef(
   (
-    { title, startDate, endDate, imageSrc, ...rest }: ContestBadgeProps,
+    { name, startDate, endDate, imageSrc, type, season }: ContestBadgeProps,
     ref?: ForwardedRef<HTMLDivElement>,
   ) => {
-    const startFormatted = format(startDate, 'd MMM, yyyy');
-    const endFormatted = format(endDate, 'd MMM, yyyy');
+    const startFormatted = startDate ? format(startDate, 'd MMM, yyyy') : '';
+    const endFormatted = endDate ? format(endDate, 'd MMM, yyyy') : '';
 
     return (
-      <Stack
-        direction="row"
-        alignItems="center"
-        spacing={2}
-        {...rest}
-        ref={ref}
-      >
-        <Avatar
-          {...stringAvatar(title)}
-          sx={{ width: 42, height: 42 }}
-          alt={title}
-          src={imageSrc}
-        />
-
+      <Stack direction="row" alignItems="center" spacing={2} ref={ref}>
+        {' '}
+        {imageSrc ? (
+          <EventsIcon
+            size={42}
+            type={type}
+            season={season}
+            imageSrc={imageSrc}
+          />
+        ) : (
+          <Avatar
+            {...stringAvatar(name || 'Contest')}
+            sx={{ width: 42, height: 42 }}
+            alt={name}
+            src={imageSrc}
+          />
+        )}
         <Box>
-          <Typography variant="caption">{title}</Typography>
+          <Typography variant="caption">{name}</Typography>
           <Typography variant="subtitle1" color="text.secondary">
             {startFormatted} - {endFormatted}
           </Typography>

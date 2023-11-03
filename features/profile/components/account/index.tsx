@@ -14,7 +14,9 @@ import React, { FC } from 'react';
 
 import { AccountIcon } from 'components/AccountIcon';
 
-import { MedalIcon } from 'components/Medals';
+import { MedalIcon } from 'components/Icons/medals';
+
+import { Tooltip } from 'components/Tooltip';
 
 import { GithubIcon, TelegramIcon, TwitterIcon } from 'config/socials';
 import { SocialIcon } from 'features/common/layout/socials';
@@ -73,15 +75,17 @@ const RankChip: FC<RankChipProps> = ({ title, value, color }) => {
 
 type AchievementChipProps = {
   title: string;
-  value: 1 | 2 | 3;
+  value: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 };
 
 const AchievementChip: FC<AchievementChipProps> = ({ title, value }) => {
   return (
-    <Stack alignItems="center" spacing={1} direction="row">
-      <MedalIcon place={value} />
-      <Chip sx={{ marginBottom: 1 }} label={title} size="small" />
-    </Stack>
+    <Tooltip
+      placement="top"
+      title={<Typography variant="body1">{title}</Typography>}
+    >
+      <MedalIcon size={30} place={value} />
+    </Tooltip>
   );
 };
 
@@ -102,7 +106,7 @@ type AccountProps = {
   };
   achievements: {
     title: string;
-    value: 1 | 2 | 3;
+    value: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   }[];
   isLoading: boolean;
 };
@@ -211,11 +215,7 @@ export const Account: FC<AccountProps> = ({
 
         {achievements.length > 0 && (
           <AccountSection sx={{ flex: 1 }} title="Achievements">
-            <Grid
-              container
-              direction={{ lg: 'column', md: 'row', sm: 'column' }}
-              spacing={{ md: 2, xs: 2, lg: 2 }}
-            >
+            <Grid container direction="row" spacing={1} wrap="wrap">
               {achievements.map((achievement) => (
                 <Grid item key={achievement.title}>
                   <AchievementChip

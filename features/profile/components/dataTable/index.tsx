@@ -17,9 +17,9 @@ import * as React from 'react';
 
 import { FC } from 'react';
 
+import { MedalIcon } from 'components/Icons/medals';
 import { InlineLoader } from 'components/InlineLoader';
 
-import { MedalIcon } from 'components/Medals';
 import { DisplayData, EnhancedTHs } from 'components/Table/components';
 
 import { CompetitionData } from 'hooks/useAuditorResults';
@@ -47,10 +47,11 @@ const TableCellContent: FC<TableCellProps> = ({ field, value, width }) => {
       return (
         <TableCell width={width}>
           <ContestBadge
-            title={value.name}
+            name={value.name}
             startDate={value.startDate}
             endDate={value.endDate}
             imageSrc={value.imageSrc}
+            season={value.season}
           />
         </TableCell>
       );
@@ -71,7 +72,7 @@ const TableCellContent: FC<TableCellProps> = ({ field, value, width }) => {
             <span>
               {value.userRank ?? 'N/A'} / {value.users ?? 'N/A'}
             </span>
-            {value.userRank && value.userRank <= 3 && (
+            {value.userRank && value.userRank <= 6 && (
               <MedalIcon place={value.userRank} />
             )}
           </Stack>

@@ -1,6 +1,6 @@
 import { alpha } from '@mui/material/styles';
 
-import { neutral } from './colors';
+import { neutral, issues } from './colors';
 const blackBase = '#222222';
 
 export const createPalette = () => {
@@ -21,6 +21,8 @@ export const createPalette = () => {
     gold: '#dccf81',
     silver: '#b0b4bb',
     bronze: '#ba875e',
+    metal: '#c0b9a8',
+    issues,
     border: {
       main: blackBase,
       light: '#efefef',

@@ -6,6 +6,7 @@ import React, { useMemo } from 'react';
 
 import { useAuditorContacts } from 'hooks/useAuditorContacts';
 import { useAuditorResults } from 'hooks/useAuditorResults';
+import { useFirstCompletedFarm } from 'hooks/useFirstCompletedFarm';
 import { useLastContestsAuditorResults } from 'hooks/useLastContestsAuditorResults';
 
 import { ProfileData } from './profileData';
@@ -27,38 +28,57 @@ const Profile: React.FC<ProfileProps> = ({ address }) => {
   const { data: auditorsContacts } = useAuditorContacts();
   const auditorContacts = auditorsContacts?.[address];
 
+  const { data: firstCompletedFarm } = useFirstCompletedFarm(address);
+
   const achievements = useMemo(() => {
     const placesContests = auditorData.contestsData.competitions
-      ?.filter((result) => result.rank.userRank && result.rank.userRank <= 3)
+      ?.filter((result) => result.rank.userRank && result.rank.userRank <= 6)
       // The results are filtered, so rank.user cannot be undefined, but ts doestn't undestand this
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       .sort((a, b) => a.rank.userRank - b.rank.userRank)
       .map((result) => ({
         value: result.rank.userRank,
-        title: result.competition.name,
+        title: result.competition?.name,
       }));
 
     const placesFarms = auditorData.farmsData.competitions
-      ?.filter((result) => result.rank.userRank && result.rank.userRank <= 3)
+      ?.filter((result) => result.rank.userRank && result.rank.userRank <= 6)
       // The results are filtered, so rank.user cannot be undefined, but ts doestn't undestand this
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       .sort((a, b) => a.rank.userRank - b.rank.userRank)
       .map((result) => ({
         value: result.rank.userRank,
-        title: result.competition.name,
+        title: result.competition?.name,
       }));
 
-    return [...(placesContests || []), ...(placesFarms || [])];
+    const firstFarmChip = firstCompletedFarm
+      ? {
+          value: 0,
+          title: (
+            <span>
+              First Completed:
+              <br />
+              {firstCompletedFarm.competition?.name ?? 'Farm'}
+            </span>
+          ),
+        }
+      : undefined;
+    return [
+      ...(placesContests || []),
+      ...(placesFarms || []),
+      ...(firstFarmChip ? [firstFarmChip] : []),
+    ];
   }, [
     auditorData.contestsData.competitions,
     auditorData.farmsData.competitions,
+    firstCompletedFarm,
   ]);
 
   return (
     <>
-      <Grid container spacing={4}>
+      <Grid container spacing={6}>
         <Grid item xs={12} md={12} lg={3}>
           <Account
             avatar={auditorData.auditorInfo?.profile.avatar}

@@ -2,16 +2,35 @@ import Box from '@mui/material/Box';
 import Image from 'next/image';
 import React from 'react';
 
-import StarIcon from 'assets/icons/star.svg';
+import ContesterIcon from 'assets/icons/contester.svg';
+import Place1Icon from 'assets/icons/place[1].svg';
+import Place2Icon from 'assets/icons/place[2].svg';
+import Place3Icon from 'assets/icons/place[3].svg';
+import Place4Icon from 'assets/icons/place[4].svg';
+import Place5Icon from 'assets/icons/place[5].svg';
+import Place6Icon from 'assets/icons/place[6].svg';
 
 interface MedalIconProps {
-  place: 1 | 2 | 3;
+  place: 0 | 1 | 2 | 3 | 4 | 5 | 6;
   size?: number;
 }
+
+const medalsMap = {
+  1: Place1Icon,
+  2: Place2Icon,
+  3: Place3Icon,
+  4: Place4Icon,
+  5: Place5Icon,
+  6: Place6Icon,
+  0: ContesterIcon,
+};
 
 export const MedalIcon: React.FC<MedalIconProps> = ({ place, size = 24 }) => {
   let color = '';
   switch (place) {
+    case 0:
+      color = 'black.main';
+      break;
     case 1:
       color = 'gold';
       break;
@@ -22,7 +41,7 @@ export const MedalIcon: React.FC<MedalIconProps> = ({ place, size = 24 }) => {
       color = 'bronze';
       break;
     default:
-      color = 'action';
+      color = 'metal';
       break;
   }
 
@@ -38,8 +57,8 @@ export const MedalIcon: React.FC<MedalIconProps> = ({ place, size = 24 }) => {
       <Image
         height={size}
         width={size}
-        alt="Star Icon"
-        src={StarIcon.src}
+        alt={`Place Icon ${place}`}
+        src={medalsMap[place]}
         color={color}
       />
     </Box>

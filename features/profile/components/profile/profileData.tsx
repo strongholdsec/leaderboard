@@ -1,14 +1,15 @@
 import { Tabs } from '@mui/base/Tabs';
+import { Stack } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import { compareDesc } from 'date-fns';
 import numeral from 'numeral';
 import { FC, SyntheticEvent, useCallback, useMemo, useState } from 'react';
 
+import { MedalIcon } from 'components/Icons/medals';
 import { Tab, TabsList } from 'components/Tabs';
 
 import { guessCompetitionName } from 'config/competitions';
@@ -17,6 +18,8 @@ import { CompetitionTotal, useAuditorResults } from 'hooks/useAuditorResults';
 import { useCompetitionIds } from 'hooks/useCompetitionIds';
 
 import { useCompetitionsInfo } from 'hooks/useCompetitionsInfo';
+
+import { useFirstCompletedFarm } from 'hooks/useFirstCompletedFarm';
 
 import {
   contestsDisplatData,
@@ -90,7 +93,7 @@ export const ProfileData: FC<ProfileDataProps> = ({ address }) => {
       competitionsId.forEach((id) => {
         if (mode === 0 || competitionInfo?.[id].type === modeMap[mode]) {
           const foundCompetition = data.competitions.find(
-            (competiton) => competiton.competition.id === id,
+            (competiton) => competiton.competition?.id === id,
           );
           points.push(foundCompetition?.points ?? 0);
           names.push(guessCompetitionName(id));
@@ -107,13 +110,7 @@ export const ProfileData: FC<ProfileDataProps> = ({ address }) => {
 
   const formattedRewards = data ? numeral(data.rewards).format('$0,0.00') : '';
 
-  const firstCompletedFarm = useMemo(() => {
-    return auditorData?.farmsData.competitions.length >= 1
-      ? auditorData.farmsData.competitions.sort((a, b) =>
-          compareDesc(a.competition.endDate ?? 0, b.competition.endDate ?? 0),
-        )[0]
-      : undefined;
-  }, [auditorData.farmsData.competitions]);
+  const { data: firstCompletedFarm } = useFirstCompletedFarm(address);
 
   return (
     <Box>
@@ -126,8 +123,9 @@ export const ProfileData: FC<ProfileDataProps> = ({ address }) => {
 
         {isLoading ? (
           <Box
+            display="flex"
             width="100%"
-            height="100%"
+            height="200px"
             alignItems="center"
             justifyContent="center"
           >
@@ -163,10 +161,28 @@ export const ProfileData: FC<ProfileDataProps> = ({ address }) => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     {modeMap[mode] === 'farm' ? (
-                      <StatsSmallCard
-                        value={firstCompletedFarm?.competition.name || ''}
-                        title="Contester since"
-                      />
+                      <Card sx={{ minWidth: 275 }} raised={false}>
+                        <CardContent
+                          sx={{ ':last-child': { paddingBottom: 2 } }}
+                        >
+                          <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={3}
+                          >
+                            <div>
+                              <Typography variant="caption">
+                                Contester since
+                              </Typography>
+                              <Typography variant="h3">
+                                {firstCompletedFarm?.competition?.name ||
+                                  'Farm'}
+                              </Typography>
+                            </div>
+                            <MedalIcon place={0} size={40} />
+                          </Stack>
+                        </CardContent>
+                      </Card>
                     ) : (
                       <StatsSmallCard
                         value={formattedRewards}

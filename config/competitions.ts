@@ -1,10 +1,22 @@
+import FantomIcon from 'assets/icons/fantom.jpg';
+import FarmAutumn from 'assets/icons/farm[autumn].svg';
+import FarmSpring from 'assets/icons/farm[spring].svg';
+// import FarmSummer from 'assets/icons/farm[summer].svg';
+import FarmWinter from 'assets/icons/farm[winter].svg';
+import LidoIcon from 'assets/icons/lido.svg';
+import MoonwellIcon from 'assets/icons/moonwel.svg';
+
+export type CompetitionType = 'farm' | 'contest';
+export type SeasonType = 2022 | 2023;
+
 export type CompetitionInfo = {
   id: number;
   name: string;
-  type: 'farm' | 'contest';
+  type: CompetitionType;
   startDate: Date;
   endDate: Date;
   imageSrc: string;
+  season: SeasonType;
 };
 
 /*
@@ -26,7 +38,8 @@ export const competitionInfo: CompetitionInfo[] = [
     type: 'farm',
     startDate: new Date(),
     endDate: new Date('2023/03/01'),
-    imageSrc: '',
+    season: 2023,
+    imageSrc: FarmWinter,
   },
   {
     id: 1,
@@ -34,7 +47,8 @@ export const competitionInfo: CompetitionInfo[] = [
     type: 'farm',
     startDate: new Date(),
     endDate: new Date('2022/05/04'),
-    imageSrc: '',
+    season: 2022,
+    imageSrc: FarmSpring,
   },
   {
     id: 2,
@@ -42,7 +56,8 @@ export const competitionInfo: CompetitionInfo[] = [
     type: 'farm',
     startDate: new Date(),
     endDate: new Date('2022/09/26'),
-    imageSrc: '',
+    season: 2022,
+    imageSrc: FarmAutumn,
   },
   {
     id: 3,
@@ -50,7 +65,8 @@ export const competitionInfo: CompetitionInfo[] = [
     type: 'contest',
     startDate: new Date('2022/10/09'),
     endDate: new Date('2022/10/16'),
-    imageSrc: '',
+    season: 2022,
+    imageSrc: MoonwellIcon,
   },
   {
     id: 4,
@@ -58,6 +74,7 @@ export const competitionInfo: CompetitionInfo[] = [
     type: 'contest',
     startDate: new Date('2022/12/05'),
     endDate: new Date('2022/12/11'),
+    season: 2022,
     imageSrc: '',
   },
   {
@@ -66,7 +83,8 @@ export const competitionInfo: CompetitionInfo[] = [
     type: 'contest',
     startDate: new Date('2023/02/14'),
     endDate: new Date('2023/03/13'),
-    imageSrc: '',
+    season: 2023,
+    imageSrc: LidoIcon,
   },
   {
     id: 6,
@@ -74,7 +92,8 @@ export const competitionInfo: CompetitionInfo[] = [
     type: 'farm',
     startDate: new Date(),
     endDate: new Date(),
-    imageSrc: '',
+    season: 2023,
+    imageSrc: FarmSpring,
   },
   {
     id: 7,
@@ -82,7 +101,8 @@ export const competitionInfo: CompetitionInfo[] = [
     type: 'contest',
     startDate: new Date('2023/08/03'),
     endDate: new Date('2023/09/11'),
-    imageSrc: '',
+    season: 2023,
+    imageSrc: FantomIcon.src,
   },
   {
     id: 8,
@@ -90,6 +110,7 @@ export const competitionInfo: CompetitionInfo[] = [
     type: 'contest',
     startDate: new Date('2023/08/03'),
     endDate: new Date('2023/11/17'),
+    season: 2023,
     imageSrc: '',
   },
   {
@@ -98,7 +119,8 @@ export const competitionInfo: CompetitionInfo[] = [
     type: 'farm',
     startDate: new Date(),
     endDate: new Date(),
-    imageSrc: '',
+    season: 2023,
+    imageSrc: FarmAutumn,
   },
 ];
 

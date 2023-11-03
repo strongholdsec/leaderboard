@@ -59,7 +59,7 @@ export const customComparators: Comparators<CompetitionData> = {
     return 0;
   },
   competition: (a, b) => {
-    if (!a['competition'].endDate || !b['competition'].endDate) return 0;
+    if (!a['competition']?.endDate || !b['competition']?.endDate) return 0;
 
     if (b['competition'].endDate < a['competition'].endDate) {
       return -1;

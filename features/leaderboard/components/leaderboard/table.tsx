@@ -32,6 +32,7 @@ import { DisplayData, EnhancedTHs } from 'components/Table/components';
 import { useCompetitionsResults } from 'hooks/useCompetitionsResults';
 import { useLastContestsResults } from 'hooks/useLastContestsResults';
 
+import { issues } from 'styles/theme/colors';
 import { IAuditorResult } from 'types';
 import { getComparator, Order, stableSort } from 'utils/tableUtils';
 
@@ -74,14 +75,14 @@ const displayData: readonly DisplayData<Data>[] = [
     numeric: true,
     label: 'Critical',
     sort: true,
-    color: '#ff394a',
+    color: issues.critical,
     width: '10%',
   },
   {
     numeric: true,
     label: 'High',
     sort: true,
-    color: '#6b63bd',
+    color: issues.high,
     width: '10%',
     field: 'high',
   },
@@ -89,7 +90,7 @@ const displayData: readonly DisplayData<Data>[] = [
     numeric: true,
     label: 'Medium',
     sort: true,
-    color: '#0089d8',
+    color: issues.medium,
     width: '10%',
     field: 'medium',
   },
@@ -97,7 +98,7 @@ const displayData: readonly DisplayData<Data>[] = [
     numeric: true,
     label: 'Low',
     sort: true,
-    color: '#02a397',
+    color: issues.low,
     width: '10%',
     field: 'low',
   },

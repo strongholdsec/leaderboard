@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 
+import { CompetitionInfo } from 'config/competitions';
 import { IAuditorResult } from 'types';
 import { descendingComparator } from 'utils/tableUtils';
 
@@ -7,14 +8,7 @@ import { useCompetitionsInfo } from './useCompetitionsInfo';
 import { useCompetitionsResults } from './useCompetitionsResults';
 
 export type CompetitionData = {
-  competition: {
-    id: number;
-    name: string | undefined;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
-    imageSrc: string | undefined;
-    type: 'farm' | 'contest' | undefined;
-  };
+  competition: CompetitionInfo | undefined;
 
   points: number;
   rewards: number;
@@ -133,14 +127,7 @@ export const useAuditorResults = (address: string) => {
           (!index && index !== 0) || index === -1 ? undefined : index + 1;
 
         return {
-          competition: {
-            name: info?.name,
-            startDate: info?.startDate,
-            endDate: info?.endDate,
-            imageSrc: info?.imageSrc,
-            type: info?.type,
-            id: competition.id,
-          },
+          competition: info,
           rank: { userRank: rank, users: competitionData?.length },
           rewards: competition.params.rewards,
           points: Number(competition.weightedAmount),
@@ -159,9 +146,9 @@ export const useAuditorResults = (address: string) => {
     );
 
     returnValue.totalData.competitions.forEach((competiton) => {
-      if (competiton.competition.type === 'contest') {
+      if (competiton.competition?.type === 'contest') {
         returnValue.contestsData.competitions.push(competiton);
-      } else if (competiton.competition.type === 'farm') {
+      } else if (competiton.competition?.type === 'farm') {
         returnValue.farmsData.competitions.push(competiton);
       }
     });

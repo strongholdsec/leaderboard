@@ -1,3 +1,4 @@
+import QuestionIcon from '@mui/icons-material/HelpOutline';
 import { useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -10,6 +11,9 @@ import type { FC } from 'react';
 
 import { Chart } from 'components/Chart';
 
+import { Tooltip } from 'components/Tooltip';
+
+import { UNIQUE_FINDINGS_TOOLPIP } from 'config/text';
 import { issues } from 'styles/theme/colors';
 
 export type ChartSeries = [number, number, number, number];
@@ -96,13 +100,14 @@ const useChartOptions = (): ApexOptions => {
 
 type CaptionedTypographyProps = {
   title: string | number;
-  caption: string | number;
+  caption: React.ReactNode;
 };
 
 const CaptionedTypography = ({ title, caption }: CaptionedTypographyProps) => (
   <Typography
     sx={{ position: 'relative', display: 'inline-block' }}
     mb={3}
+    pr={3}
     component="div"
     variant="caption"
   >
@@ -111,7 +116,7 @@ const CaptionedTypography = ({ title, caption }: CaptionedTypographyProps) => (
       sx={{
         position: 'absolute',
         top: 0,
-        right: -8,
+        right: 20,
         transform: 'translateX(100%)',
       }}
       mb={3}
@@ -126,12 +131,34 @@ const CaptionedTypography = ({ title, caption }: CaptionedTypographyProps) => (
 type FindinfsProps = {
   findings: ChartSeries;
   uniqueFindings: ChartSeries;
+  uniqieTooltip?: boolean;
 };
 
-export const Findings: FC<FindinfsProps> = ({ findings, uniqueFindings }) => (
+export const Findings: FC<FindinfsProps> = ({
+  findings,
+  uniqueFindings,
+  uniqieTooltip = false,
+}) => (
   <Box>
     <Box>
-      <CaptionedTypography title="Findings" caption="(Unique)" />
+      <CaptionedTypography
+        title="Findings"
+        caption={
+          uniqieTooltip ? (
+            <Tooltip title={UNIQUE_FINDINGS_TOOLPIP}>
+              <Box display="flex" alignItems="center" flexDirection="row">
+                (Unique&nbsp;
+                <Box display="inline-block">
+                  <QuestionIcon sx={{ height: '15px', width: '15px' }} />
+                </Box>
+                )
+              </Box>
+            </Tooltip>
+          ) : (
+            '(Unique)'
+          )
+        }
+      />
     </Box>
 
     <Stack spacing={1}>
@@ -191,7 +218,11 @@ export const IssuesStats: FC<FindinfsProps> = ({
     <Card sx={{ height: '100%' }} raised={false}>
       <CardContent sx={{ paddingTop: 3, ':last-child': { paddingBottom: 2 } }}>
         <Stack spacing={3} direction="row" justifyContent="space-between">
-          <Findings findings={findings} uniqueFindings={uniqueFindings} />
+          <Findings
+            findings={findings}
+            uniqueFindings={uniqueFindings}
+            uniqieTooltip
+          />
           <Box
             sx={{
               alignItems: 'center',

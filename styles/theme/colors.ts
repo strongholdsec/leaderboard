@@ -14,7 +14,7 @@ export const neutral = {
 
 export const issues = {
   critical: '#ff394a',
-  medium: '#6b63bd',
-  high: '#0089d8',
+  high: '#6b63bd',
+  medium: '#0089d8',
   low: '#02a397',
 };

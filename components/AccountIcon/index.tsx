@@ -34,12 +34,12 @@ export const AccountIcon: FC<AccountProps> = ({
     heightParsed = onlySmallScreen
       ? height.sm - 10
       : onlyMediumScreen
-      ? height.md - 10
+      ? height.md - 8
       : onlyLargeScreen
-      ? height.lg - 10
-      : height.xs - 10;
+      ? height.lg - 6
+      : height.xs - 4;
   } else if (typeof height === 'number') {
-    heightParsed = height - 10;
+    heightParsed = height - 4;
   }
 
   return (
