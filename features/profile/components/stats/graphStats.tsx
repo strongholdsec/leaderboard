@@ -134,7 +134,7 @@ export const GraphStats: FC<GraphStatsProps> = React.memo(
           }}
         >
           <Stack spacing={3} direction="column" justifyContent="space-between">
-            <Box sx={{ position: 'absolute' }}>
+            <Box sx={{ position: 'absolute', zIndex: 1 }}>
               <Typography variant="caption">Total Points</Typography>
               <Typography variant="h3">{formattedPoints}</Typography>
             </Box>
@@ -143,6 +143,7 @@ export const GraphStats: FC<GraphStatsProps> = React.memo(
               sx={{
                 height: chartHeight,
                 position: 'relative',
+                touchAction: 'none',
               }}
             >
               <Chart
