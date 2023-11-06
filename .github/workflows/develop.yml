@@ -1,4 +1,4 @@
-name: CI/CD Proccess for PROD Application
+name: CI/CD Proccess for DEV Application
 
 on:
   workflow_dispatch:
