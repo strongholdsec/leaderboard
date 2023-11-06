@@ -175,17 +175,20 @@ export const Account: FC<AccountProps> = ({
                     {socials.telegram && (
                       <SocialIcon
                         src={TelegramIcon.src}
-                        link={socials.telegram}
+                        link={`https://t.me/${socials.telegram}`}
                       />
                     )}
                     {socials.twitter && (
                       <SocialIcon
                         src={TwitterIcon.src}
-                        link={socials.twitter}
+                        link={`https://twitter.com/${socials.twitter}`}
                       />
                     )}
                     {socials.github && (
-                      <SocialIcon src={GithubIcon.src} link={socials.github} />
+                      <SocialIcon
+                        src={GithubIcon.src}
+                        link={`https://github.com/${socials.github}`}
+                      />
                     )}
                   </Stack>
                 </div>
