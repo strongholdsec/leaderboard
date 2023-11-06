@@ -78,7 +78,7 @@ const Profile: React.FC<ProfileProps> = ({ address }) => {
 
   return (
     <>
-      <Grid container spacing={6}>
+      <Grid container spacing={4}>
         <Grid item xs={12} md={12} lg={3}>
           <Account
             avatar={auditorData.auditorInfo?.profile.avatar}

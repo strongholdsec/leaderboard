@@ -20,23 +20,23 @@ export type CompetitionInfo = {
 };
 
 /*
-ID = 0 - Farm Winter 2023 (??? - 01.03.2023);
-ID = 1 - Farm Spring 2022 (??? - 04.05.2022);
-ID = 2 - Farm Autumn 2022 (??? - 26.09.2022);
+ID = 0 - Farm Winter 2023 (23.01.2023 - 01.03.2023);
+ID = 1 - Farm Spring 2022 (01.04.2022 - 04.05.2022);
+ID = 2 - Farm Autumn 2022 (22.07.2022 - 26.09.2022);
 ID = 3 - Moonwell Contest (9.10.2022 - 16.10.2022);
 ID = 4 - Sidechain Oracles Contest (05.12.2022 - 11.12.2022);
 ID = 5 - Lido Contest (14.02.2023 - 13.03.2023);
-ID = 6 - Farm Spring 2023 (??? - ???);
+ID = 6 - Farm Spring 2023 (28.04.2023 - 16.06.2023);
 ID = 7 - Fathom Contest (03.08.2023 - 11.09.2023);
 ID = 8 - NetherFi Contest (02.10.23 - 17.11.23);
-ID = 9 - Farm Autumn 2023 (??? - ???).
+ID = 9 - Farm Autumn 2023 (30.10.2023 - 26.12.2023).
 */
 export const competitionInfo: CompetitionInfo[] = [
   {
     id: 0,
     name: 'Farm Winter 2023',
     type: 'farm',
-    startDate: new Date(),
+    startDate: new Date('2023/01/23'),
     endDate: new Date('2023/03/01'),
     season: 2023,
     imageSrc: FarmWinter,
@@ -45,7 +45,7 @@ export const competitionInfo: CompetitionInfo[] = [
     id: 1,
     name: 'Farm Spring 2022',
     type: 'farm',
-    startDate: new Date(),
+    startDate: new Date('2022/04/01'),
     endDate: new Date('2022/05/04'),
     season: 2022,
     imageSrc: FarmSpring,
@@ -54,7 +54,7 @@ export const competitionInfo: CompetitionInfo[] = [
     id: 2,
     name: 'Farm Autumn 2022',
     type: 'farm',
-    startDate: new Date(),
+    startDate: new Date('2022/07/22'),
     endDate: new Date('2022/09/26'),
     season: 2022,
     imageSrc: FarmAutumn,
@@ -90,8 +90,8 @@ export const competitionInfo: CompetitionInfo[] = [
     id: 6,
     name: 'Farm Spring 2023',
     type: 'farm',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date('2023/04/28'),
+    endDate: new Date('2023/06/16'),
     season: 2023,
     imageSrc: FarmSpring,
   },
@@ -117,8 +117,8 @@ export const competitionInfo: CompetitionInfo[] = [
     id: 9,
     name: 'Farm Autumn 2023',
     type: 'farm',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date('2023/10/30'),
+    endDate: new Date('2023/12/26'),
     season: 2023,
     imageSrc: FarmAutumn,
   },
