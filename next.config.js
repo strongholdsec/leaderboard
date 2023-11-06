@@ -7,7 +7,10 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-  output: 'standalone'
-}
+  output: 'standalone',
+  eslint: {
+    dirs: ['app', 'features', 'components', 'hooks'],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

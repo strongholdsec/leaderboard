@@ -6,6 +6,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { publicProvider } from 'wagmi/providers/public';
+
 import { getBackendRPCPath } from '../config/rpc';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
@@ -13,8 +14,8 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   [
     jsonRpcProvider({
       rpc: (chain) => ({
-        http: `${getBackendRPCPath()}/${chain.id}`
-      })
+        http: `${getBackendRPCPath()}/${chain.id}`,
+      }),
     }),
     publicProvider(),
   ],

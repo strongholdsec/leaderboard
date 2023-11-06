@@ -1,4 +1,7 @@
-import { neutral } from './colors';
+import { alpha } from '@mui/material/styles';
+
+import { neutral, issues } from './colors';
+const blackBase = '#222222';
 
 export const createPalette = () => {
   return {
@@ -9,8 +12,23 @@ export const createPalette = () => {
     divider: '#2D3748',
     neutral,
     grey: neutral,
+    black: {
+      main: blackBase,
+      light: alpha(blackBase, 0.5),
+      dark: alpha(blackBase, 0.9),
+      contrastText: '#fff',
+    },
+    gold: '#dccf81',
+    silver: '#b0b4bb',
+    bronze: '#ba875e',
+    metal: '#c0b9a8',
+    issues,
+    border: {
+      main: blackBase,
+      light: '#efefef',
+    },
     text: {
-      primary: '#222222',
+      primary: blackBase,
       secondary: '#757a85',
       disabled: 'rgba(255, 255, 255, 0.48)',
     },

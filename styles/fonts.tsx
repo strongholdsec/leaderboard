@@ -1,4 +1,4 @@
-const CSS_FONTS = `@import url(fonts/Gilroy/font.css);
+const CSS_FONTS = `@import url(/fonts/Gilroy/font.css);
 body {
 font-family: Gilroy;
 }`;

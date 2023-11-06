@@ -17,30 +17,30 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import { visuallyHidden } from '@mui/utils';
-import { useCompetitionIds } from 'hooks/useCompetitionIds';
-import { useContestInfo } from 'hooks/useContestInfo';
+
+import Link from 'next/link';
 import * as React from 'react';
 
 import { FC, useMemo } from 'react';
-
-import { getLastContestsResults } from 'utils/getLastContestsResults';
 
 import { AddressBadge } from 'components/AddressBadge';
 
 import { InlineLoader } from 'components/InlineLoader';
 
-import { IAuditorResult } from 'types';
+import { DisplayData, EnhancedTHs } from 'components/Table/components';
 
-import { getComparator, Order, stableSort } from './utils';
-import { useEnsName } from 'wagmi';
+import { useCompetitionsResults } from 'hooks/useCompetitionsResults';
+import { useLastContestsResults } from 'hooks/useLastContestsResults';
+
+import { issues } from 'styles/theme/colors';
+import { IAuditorResult } from 'types';
+import { getComparator, Order, stableSort } from 'utils/tableUtils';
 
 type Data = Pick<
   IAuditorResult,
   | 'profile'
   | 'total'
-  | 'contests'
+  | 'competitions'
   | 'critical'
   | 'medium'
   | 'low'
@@ -48,16 +48,7 @@ type Data = Pick<
   | 'rewards'
 >;
 
-interface DisplayData {
-  field: keyof Data;
-  label: string;
-  numeric: boolean;
-  sort: boolean;
-  color?: string;
-  width: string;
-}
-
-const displayData: readonly DisplayData[] = [
+const displayData: readonly DisplayData<Data>[] = [
   {
     field: 'profile',
     numeric: false,
@@ -73,7 +64,7 @@ const displayData: readonly DisplayData[] = [
     width: '10%',
   },
   {
-    field: 'contests',
+    field: 'competitions',
     numeric: true,
     label: 'Contests',
     sort: true,
@@ -84,14 +75,14 @@ const displayData: readonly DisplayData[] = [
     numeric: true,
     label: 'Critical',
     sort: true,
-    color: '#ff394a',
+    color: issues.critical,
     width: '10%',
   },
   {
     numeric: true,
     label: 'High',
     sort: true,
-    color: '#6b63bd',
+    color: issues.high,
     width: '10%',
     field: 'high',
   },
@@ -99,7 +90,7 @@ const displayData: readonly DisplayData[] = [
     numeric: true,
     label: 'Medium',
     sort: true,
-    color: '#0089d8',
+    color: issues.medium,
     width: '10%',
     field: 'medium',
   },
@@ -107,7 +98,7 @@ const displayData: readonly DisplayData[] = [
     numeric: true,
     label: 'Low',
     sort: true,
-    color: '#02a397',
+    color: issues.low,
     width: '10%',
     field: 'low',
   },
@@ -119,63 +110,6 @@ const displayData: readonly DisplayData[] = [
     field: 'rewards',
   },
 ];
-
-interface EnhancedTableProps {
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data,
-  ) => void;
-  order: Order;
-  orderBy: string;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const { order, orderBy, onRequestSort } = props;
-  const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property);
-    };
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell>#</TableCell>
-        {displayData.map((headCell) =>
-          headCell.sort ? (
-            <TableCell
-              key={headCell.field}
-              align="left"
-              padding="normal"
-              sortDirection={orderBy === headCell.field ? order : false}
-            >
-              <TableSortLabel
-                active={orderBy === headCell.field}
-                direction={orderBy === headCell.field ? order : 'desc'}
-                onClick={createSortHandler(headCell.field)}
-                sx={{
-                  color: `${headCell.color} !important`,
-                }}
-              >
-                {headCell.label}
-                {orderBy === headCell.field ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === 'desc'
-                      ? 'sorted descending'
-                      : 'sorted ascending'}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </TableCell>
-          ) : (
-            <TableCell key={headCell.field} align="left" padding="normal">
-              {headCell.label}
-            </TableCell>
-          ),
-        )}
-      </TableRow>
-    </TableHead>
-  );
-}
 
 type TableCellProps = {
   field: keyof Data;
@@ -194,7 +128,15 @@ const TableCellContent: FC<TableCellProps> = ({
     case 'profile':
       return (
         <TableCell width={width}>
-          <AddressBadge address={value.address.toString()} name={value.name} avatar={value.avatar} symbols={4} />
+          <Link href={`/profile/${value.address}`}>
+            <AddressBadge
+              height={24}
+              address={value.address.toString()}
+              name={value.name}
+              avatar={value.avatar}
+              symbols={4}
+            />
+          </Link>
         </TableCell>
       );
     case 'rewards':
@@ -251,22 +193,15 @@ export const Leaderboard = () => {
     setFilterBy(event.target.value as FilterOptions);
   };
 
-  const { data, isLoading } = useContestInfo();
-  const contestsIds = useCompetitionIds();
-  const lastContestsData: Data[] = useMemo(
-    () =>
-      contestsIds.data && data?.auditorResults
-        ? getLastContestsResults(data.auditorResults, contestsIds.data)
-        : [],
-    [contestsIds.data, data?.auditorResults],
-  );
+  const { data, isLoading } = useCompetitionsResults();
+  const { data: lastContestsData } = useLastContestsResults();
 
   const rows: Data[] = useMemo(
     () =>
       filterBy === FilterOptions.AllContests
-        ? (data?.auditorResults as Data[]) ?? []
-        : lastContestsData,
-    [data?.auditorResults, filterBy, lastContestsData],
+        ? (data?.totalResults as Data[]) ?? []
+        : lastContestsData.lastContestsResults ?? [],
+    [data?.totalResults, filterBy, lastContestsData],
   );
 
   const [order, setOrder] = React.useState<Order>('desc');
@@ -340,11 +275,18 @@ export const Leaderboard = () => {
             aria-labelledby="tableTitle"
             size="medium"
           >
-            <EnhancedTableHead
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-            />
+            <TableHead>
+              <TableRow>
+                <TableCell>#</TableCell>
+                <EnhancedTHs
+                  order={order}
+                  orderBy={orderBy}
+                  onRequestSort={handleRequestSort}
+                  displayConfig={displayData}
+                />
+              </TableRow>
+            </TableHead>
+
             <TableBody>
               {isLoading && <TableLoadingRows rowsPerPage={rowsPerPage} />}
 
