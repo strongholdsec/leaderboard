@@ -124,7 +124,7 @@ export const competitionInfo: CompetitionInfo[] = [
   },
   {
     id: 10,
-    name: 'Interim audit #1',
+    name: 'Shiftam Contest',
     type: 'contest',
     startDate: new Date('2023/12/08'),
     endDate: new Date('2023/12/25'),
@@ -139,7 +139,7 @@ export const competitionInfo: CompetitionInfo[] = [
     endDate: new Date('2024/01/26'),
     season: 2023,
     imageSrc: FarmAutumn,
-  }
+  },
 ];
 
 export const guessCompetitionName = (id: number) => {
