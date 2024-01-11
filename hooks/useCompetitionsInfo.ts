@@ -33,7 +33,7 @@ export const useContests = (): CompetitionsInfoReturn => {
   const { data: competitionInfos, isLoading } = useCompetitionsInfo();
 
   const contestsInfo = useMemo(() => {
-    return competitionInfos?.filter((element) => element.type === 'contest');
+    return competitionInfos?.filter((element) => element?.type === 'contest');
   }, [competitionInfos]);
 
   return { data: contestsInfo, isLoading };
@@ -43,7 +43,7 @@ export const useFarms = (): CompetitionsInfoReturn => {
   const { data: competitionInfos, isLoading } = useCompetitionsInfo();
 
   const farmsInfos = useMemo(() => {
-    return competitionInfos?.filter((element) => element.type === 'farm');
+    return competitionInfos?.filter((element) => element?.type === 'farm');
   }, [competitionInfos]);
 
   return { data: farmsInfos, isLoading };

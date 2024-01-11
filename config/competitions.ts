@@ -115,13 +115,31 @@ export const competitionInfo: CompetitionInfo[] = [
   },
   {
     id: 9,
+    name: 'UNCX Contest',
+    type: 'contest',
+    startDate: new Date('2023/11/23'),
+    endDate: new Date('2023/12/11'),
+    season: 2023,
+    imageSrc: '',
+  },
+  {
+    id: 10,
+    name: 'Interim audit #1',
+    type: 'contest',
+    startDate: new Date('2023/12/08'),
+    endDate: new Date('2023/12/25'),
+    season: 2023,
+    imageSrc: '',
+  },
+  {
+    id: 11,
     name: 'Farm Autumn 2023',
     type: 'farm',
     startDate: new Date('2023/10/30'),
-    endDate: new Date('2023/12/26'),
+    endDate: new Date('2024/01/26'),
     season: 2023,
     imageSrc: FarmAutumn,
-  },
+  }
 ];
 
 export const guessCompetitionName = (id: number) => {
