@@ -91,7 +91,7 @@ export const ProfileData: FC<ProfileDataProps> = ({ address }) => {
       const points: number[] = [];
       const names: string[] = [];
       competitionsId.forEach((id) => {
-        if (mode === 0 || competitionInfo?.[id].type === modeMap[mode]) {
+        if (mode === 0 || competitionInfo?.[id]?.type === modeMap[mode]) {
           const foundCompetition = data.competitions.find(
             (competiton) => competiton.competition?.id === id,
           );
