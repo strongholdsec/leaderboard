@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 import format from 'date-fns/format';
-import { ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef, useState } from 'react';
 
 import { EventsIcon } from 'components/Icons/events';
 
@@ -29,15 +29,18 @@ export const ContestBadge = forwardRef(
     const startFormatted = startDate ? format(startDate, 'd MMM, yyyy') : '';
     const endFormatted = endDate ? format(endDate, 'd MMM, yyyy') : '';
 
+    const [imageLoadingError, setImageError] = useState(false);
+
     return (
       <Stack direction="row" alignItems="center" spacing={2} ref={ref}>
         {' '}
-        {imageSrc ? (
+        {imageSrc && !imageLoadingError ? (
           <EventsIcon
             size={42}
             type={type}
             season={season}
             imageSrc={imageSrc}
+            onError={() => setImageError(true)}
           />
         ) : (
           <Avatar
