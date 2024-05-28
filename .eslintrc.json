@@ -53,6 +53,7 @@
             "position": "before"
           },
           { "pattern":  "contracts", "group":  "internal" },
+          { "pattern":  "content", "group":  "internal" },
           { "pattern": "assets/**", "group": "internal" },
           { "pattern": "lib/**", "group": "internal" },
           { "pattern": "hooks", "group": "internal" },
