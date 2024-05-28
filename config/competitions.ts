@@ -5,6 +5,9 @@ import FarmSpring from 'assets/icons/farm_spring.svg';
 import FarmWinter from 'assets/icons/farm_winter.svg';
 import LidoIcon from 'assets/icons/lido.svg';
 import MoonwellIcon from 'assets/icons/moonwel.svg';
+import NetherFi from 'assets/icons/netherfi.jpg';
+import Shiftam from 'assets/icons/shiftam.png';
+import UNCXIcon from 'assets/icons/uncx.svg';
 
 export type CompetitionType = 'farm' | 'contest';
 export type SeasonType = 2022 | 2023;
@@ -111,14 +114,32 @@ export const competitionInfo: CompetitionInfo[] = [
     startDate: new Date('2023/08/03'),
     endDate: new Date('2023/11/17'),
     season: 2023,
-    imageSrc: '',
+    imageSrc: NetherFi.src,
   },
   {
     id: 9,
+    name: 'UNCX Contest',
+    type: 'contest',
+    startDate: new Date('2023/11/23'),
+    endDate: new Date('2023/12/11'),
+    season: 2023,
+    imageSrc: UNCXIcon,
+  },
+  {
+    id: 10,
+    name: 'Shiftam Contest',
+    type: 'contest',
+    startDate: new Date('2023/12/08'),
+    endDate: new Date('2023/12/25'),
+    season: 2023,
+    imageSrc: Shiftam.src,
+  },
+  {
+    id: 11,
     name: 'Farm Autumn 2023',
     type: 'farm',
     startDate: new Date('2023/10/30'),
-    endDate: new Date('2023/12/26'),
+    endDate: new Date('2024/01/26'),
     season: 2023,
     imageSrc: FarmAutumn,
   },

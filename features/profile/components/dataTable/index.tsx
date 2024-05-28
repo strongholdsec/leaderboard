@@ -47,11 +47,11 @@ const TableCellContent: FC<TableCellProps> = ({ field, value, width }) => {
       return (
         <TableCell width={width}>
           <ContestBadge
-            name={value.name}
-            startDate={value.startDate}
-            endDate={value.endDate}
-            imageSrc={value.imageSrc}
-            season={value.season}
+            name={value?.name ?? '???'}
+            startDate={value?.startDate}
+            endDate={value?.endDate}
+            imageSrc={value?.imageSrc}
+            season={value?.season}
           />
         </TableCell>
       );
