@@ -15,6 +15,10 @@ This is the audior board project that shows global auditors results in the Stron
 - Easily mint new SBT
 - Generate personal certificate PDF
 
+## How to add new competitions: 
+
+For more info, visit `content/README.md` instruction.
+
 ## Roadmap
 #### Q4 2023
 - Move current `Contests` page to `Global Stats` page
