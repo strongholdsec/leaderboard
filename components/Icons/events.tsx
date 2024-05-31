@@ -40,14 +40,25 @@ export const EventsIcon: React.FC<EventIconProps> = ({
         overflow: 'hidden',
       }}
     >
-      <Image
-        height={size}
-        width={size}
-        alt={`Event Icon ${type}`}
-        src={imageSrc ?? ''}
-        color={color}
-        onError={onError}
-      />
+      {imageSrc?.endsWith('svg') ? (
+        <img
+          onError={onError}
+          width={size}
+          height={size}
+          color={color}
+          src={imageSrc}
+          alt="Event Icon"
+        />
+      ) : (
+        <Image
+          height={size}
+          width={size}
+          alt={`Event Icon ${type}`}
+          src={imageSrc ?? ''}
+          color={color}
+          onError={onError}
+        />
+      )}
     </Box>
   );
 };
