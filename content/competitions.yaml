@@ -7,7 +7,13 @@
 # ID = 6 - Farm Spring 2023 (28.04.2023 - 16.06.2023);
 # ID = 7 - Fathom Contest (03.08.2023 - 11.09.2023);
 # ID = 8 - NetherFi Contest (02.10.23 - 17.11.23);
-# ID = 9 - Farm Autumn 2023 (30.10.2023 - 26.12.2023).
+# ID = 9 - UNCX Contest (30.10.2023 - 26.12.2023).
+# ID = 10 - Shiftam Contest (08.12.2023 - 25.12.2023).
+# ID = 11 - Farm Autumn 2023 (30.10.2023 - 26.12.2023).
+# ID = 12 - Stronghold Rewards
+# ID = 13 - Papaya Contest (22.03.2024 - 16.04.2024).
+# ID = 14 - Clearpool Contest (28.03.2024 - 29.04.2024).
+# ID = 15 - Truflation Contest (25.04.2024 - 24.05.2024).
 
 competitions:
   - id: 0
@@ -105,3 +111,35 @@ competitions:
     endDate: 2024/01/26
     season: 2023
     imageSrc: /icons/farm_autumn.svg
+
+  - id: 12
+    name: Stronghold Rewards
+    type: farm
+    startDate: 2024/01/01
+    endDate: 2024/03/01
+    season: 2024
+    imageSrc: /icons/farm_winter.svg
+
+  - id: 13
+    name: Papaya Contest
+    type: contest
+    startDate: 2024/03/22
+    endDate: 2024/04/16
+    season: 2024
+    imageSrc: /icons/papaya.svg
+
+  - id: 14
+    name: Clearpool Contest
+    type: contest
+    startDate: 2024/03/28
+    endDate: 2024/04/29
+    season: 2024
+    imageSrc: /icons/clearpool.svg
+
+  - id: 15
+    name: Truflation Contest
+    type: contest
+    startDate: 2024/04/25
+    endDate: 2024/05/24
+    season: 2024
+    imageSrc: /icons/truflation.svg
