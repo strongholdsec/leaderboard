@@ -7,9 +7,8 @@ import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import type { ApexOptions } from 'apexcharts';
+import dynamic from 'next/dynamic';
 import type { FC } from 'react';
-
-import { Chart } from 'components/Chart';
 
 import { Tooltip } from 'components/Tooltip';
 
@@ -17,6 +16,11 @@ import { UNIQUE_FINDINGS_TOOLPIP } from 'config/text';
 import { issues } from 'styles/theme/colors';
 
 export type ChartSeries = [number, number, number, number];
+
+const Chart = dynamic(() => import('components/Chart'), {
+  ssr: false,
+  loading: () => null,
+});
 
 const labels: string[] = ['Critical', 'High', 'Medium', 'Low'];
 const colors = [issues.critical, issues.high, issues.medium, issues.low];
