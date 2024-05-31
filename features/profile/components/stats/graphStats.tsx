@@ -5,13 +5,17 @@ import Stack from '@mui/material/Stack';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import type { ApexOptions } from 'apexcharts';
+import dynamic from 'next/dynamic';
 
 import numeral from 'numeral';
 import type { FC } from 'react';
 
 import React from 'react';
 
-import { Chart } from 'components/Chart';
+const Chart = dynamic(() => import('components/Chart'), {
+  ssr: false,
+  loading: () => null,
+});
 
 type UseChartOptions = (labelsArray?: string[]) => ApexOptions;
 
@@ -123,6 +127,7 @@ export const GraphStats: FC<GraphStatsProps> = React.memo(
     const chartOptions = useChartOptions(labelsArray);
 
     const chartHeight = 155;
+    const charWidth = '100%';
     const formattedPoints = numeral(points).format('0,0');
     return (
       <Card raised={false}>
@@ -148,6 +153,7 @@ export const GraphStats: FC<GraphStatsProps> = React.memo(
             >
               <Chart
                 height={chartHeight}
+                width={charWidth}
                 options={chartOptions}
                 series={[
                   {
