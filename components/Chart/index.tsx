@@ -1,3 +1,5 @@
+'use client';
+
 import { styled } from '@mui/material/styles';
 import { alpha } from '@mui/system/colorManipulator';
 import dynamic from 'next/dynamic';
@@ -8,7 +10,7 @@ const ApexChart = dynamic<Props>(() => import('react-apexcharts'), {
   loading: () => null,
 });
 
-export const Chart = styled(ApexChart)(({ theme }) => ({
+export default styled(ApexChart)(({ theme }) => ({
   '& .apexcharts-xaxistooltip': {
     backgroundColor: theme.palette.background.paper,
     boxShadow: theme.shadows[16],

@@ -11,6 +11,19 @@ const nextConfig = {
   eslint: {
     dirs: ['app', 'features', 'components', 'hooks'],
   },
+  images: {
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+  },
+  webpack: function (config) {
+    config.module.rules.push({
+      test: /\.ya?ml$/,
+      // type: 'json',
+      use: 'yaml-loader',
+    });
+    return config;
+  },
 };
 
 module.exports = nextConfig;

@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import Image from 'next/image';
+import Image, { ImageProps } from 'next/image';
 import React from 'react';
 
 import { CompetitionInfo } from 'config/competitions';
@@ -7,6 +7,7 @@ import { issues } from 'styles/theme/colors';
 
 type EventIconProps = Partial<CompetitionInfo> & {
   size?: number;
+  onError?: ImageProps['onError'];
 };
 
 export const EventsIcon: React.FC<EventIconProps> = ({
@@ -14,6 +15,7 @@ export const EventsIcon: React.FC<EventIconProps> = ({
   type,
   imageSrc,
   size = 24,
+  onError,
 }) => {
   let color = '';
   switch (season) {
@@ -44,6 +46,8 @@ export const EventsIcon: React.FC<EventIconProps> = ({
         alt={`Event Icon ${type}`}
         src={imageSrc ?? ''}
         color={color}
+        onError={onError}
+        unoptimized={false}
       />
     </Box>
   );
